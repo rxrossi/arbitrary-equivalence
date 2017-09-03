@@ -1,4 +1,4 @@
-import getArrayOfEntries, { types } from './index';
+import getArrayOfEntries from './index';
 
 describe('getArrayOfEntries', () => {
 	describe('plain structure (no nests)', () => {
@@ -14,13 +14,11 @@ describe('getArrayOfEntries', () => {
 					location: [],
 					name: 'name',
 					value: 'John',
-					type: types.pair,
 				},
 				{
 					location: [],
 					name: 'surname',
 					value: 'Doe',
-					type: types.pair,
 				}
 			];
 
@@ -41,13 +39,11 @@ describe('getArrayOfEntries', () => {
 					location: [],
 					name: '0',
 					value: 'one',
-					type: types.element,
 				},
 				{
 					location: [],
 					name: '1',
 					value: 'two',
-					type: types.element,
 				}
 			];
 
@@ -73,25 +69,21 @@ describe('getArrayOfEntries', () => {
 					location: [],
 					name: 'name',
 					value: 'John',
-					type: types.pair,
 				},
 				{
 					location: [],
 					name: 'surname',
 					value: 'Doe',
-					type: types.pair,
 				},
 				{
 					location: ['address'],
 					name: 'city',
 					value: 'NYC',
-					type: types.pair,
 				},
 				{
 					location: ['address'],
 					name: 'state',
 					value: 'NY',
-					type: types.pair,
 				},
 			];
 
@@ -117,25 +109,21 @@ describe('getArrayOfEntries', () => {
 					location: [],
 					name: 'name',
 					value: 'John',
-					type: types.pair,
 				},
 				{
 					location: [],
 					name: 'surname',
 					value: 'Doe',
-					type: types.pair,
 				},
 				{
 					location: ['sons'],
 					name: '0',
 					value: 'Kathy',
-					type: types.element,
 				},
 				{
 					location: ['sons'],
 					name: '1',
 					value: 'Monique',
-					type: types.element,
 				},
 			];
 
@@ -145,6 +133,7 @@ describe('getArrayOfEntries', () => {
 
 		})
 	})
+
 	it('correctly convets an array where each element is a object', () => {
 		const people = [
 			{name: 'John', city: 'NY'},
@@ -155,25 +144,21 @@ describe('getArrayOfEntries', () => {
 				location: ['0'],
 				name: 'name',
 				value: 'John',
-				type: types.pair,
 			},
 			{
 				location: ['0'],
 				name: 'city',
 				value: 'NY',
-				type: types.pair,
 			},
 			{
 				location: ['1'],
 				name: 'name',
 				value: 'Bart',
-				type: types.pair,
 			},
 			{
 				location: ['1'],
 				name: 'city',
 				value: 'Springfield',
-				type: types.pair,
 			}
 		]
 		const answer = getArrayOfEntries(people)
