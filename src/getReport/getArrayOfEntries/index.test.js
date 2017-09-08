@@ -11,18 +11,23 @@ describe('getArrayOfEntries', () => {
 
 			const expected = [
 				{
-					location: [],
+					location: [
+						{partial: '', type: 'object'}
+					],
 					name: 'name',
 					value: 'John',
 				},
 				{
-					location: [],
+					location: [
+						{partial: '', type: 'object'}
+					],
 					name: 'surname',
 					value: 'Doe',
 				}
 			];
 
 			const answer = getArrayOfEntries(obj);
+			// console.log(answer[0])
 
 			expect(answer).toEqual(expected);
 
@@ -36,13 +41,19 @@ describe('getArrayOfEntries', () => {
 
 			const expected = [
 				{
-					location: [],
-					name: '0',
+					location: [
+						{partial: '', type: 'array'},
+						{partial: '0', type: 'string'}
+					],
+					name: '',
 					value: 'one',
 				},
 				{
-					location: [],
-					name: '1',
+					location: [
+						{partial: '', type: 'array'},
+						{partial: '1', type: 'string'}
+					],
+					name: '',
 					value: 'two',
 				}
 			];
@@ -66,22 +77,32 @@ describe('getArrayOfEntries', () => {
 
 			const expected = [
 				{
-					location: [],
+					location: [
+						{partial:'', type:'object'}
+					],
 					name: 'name',
 					value: 'John',
 				},
 				{
-					location: [],
+					location: [
+						{partial:'', type:'object'}
+					],
 					name: 'surname',
 					value: 'Doe',
 				},
 				{
-					location: ['address'],
+					location: [
+						{partial:'', type:'object'},
+						{partial:'address', type:'object'}
+					],
 					name: 'city',
 					value: 'NYC',
 				},
 				{
-					location: ['address'],
+					location: [
+						{partial:'', type:'object'},
+						{partial:'address', type:'object'}
+					],
 					name: 'state',
 					value: 'NY',
 				},
@@ -106,23 +127,35 @@ describe('getArrayOfEntries', () => {
 
 			const expected = [
 				{
-					location: [],
+					location: [
+						{partial:'', type:'object'},
+					],
 					name: 'name',
 					value: 'John',
 				},
 				{
-					location: [],
+					location: [
+						{partial:'', type:'object'},
+					],
 					name: 'surname',
 					value: 'Doe',
 				},
 				{
-					location: ['sons'],
-					name: '0',
+					location: [
+						{partial:'', type:'object'},
+						{partial:'sons', type:'array'},
+						{partial:'0', type:'string'},
+					],
+					name: '',
 					value: 'Kathy',
 				},
 				{
-					location: ['sons'],
-					name: '1',
+					location: [
+						{partial:'', type:'object'},
+						{partial:'sons', type:'array'},
+						{partial:'1', type:'string'},
+					],
+					name: '',
 					value: 'Monique',
 				},
 			];
@@ -138,27 +171,48 @@ describe('getArrayOfEntries', () => {
 		const people = [
 			{name: 'John', city: 'NY'},
 			{name: 'Bart', city: 'Springfield'},
+			'three'
 		];
 		const expected = [
 			{
-				location: ['0'],
+				location: [
+					{partial:'', type:'array'},
+					{partial:'0', type:'object'}
+				],
 				name: 'name',
 				value: 'John',
 			},
 			{
-				location: ['0'],
+				location: [
+					{partial:'', type:'array'},
+					{partial:'0', type:'object'}
+				],
 				name: 'city',
 				value: 'NY',
 			},
 			{
-				location: ['1'],
+				location: [
+					{partial:'', type:'array'},
+					{partial:'1', type:'object'}
+				],
 				name: 'name',
 				value: 'Bart',
 			},
 			{
-				location: ['1'],
+				location: [
+					{partial:'', type:'array'},
+					{partial:'1', type:'object'}
+				],
 				name: 'city',
 				value: 'Springfield',
+			},
+			{
+				location: [
+					{partial:'', type:'array'},
+					{partial:'2', type:'string'}
+				],
+				name: '',
+				value: 'three',
 			}
 		]
 		const answer = getArrayOfEntries(people)

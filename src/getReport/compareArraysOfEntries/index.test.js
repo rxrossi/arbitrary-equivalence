@@ -1,17 +1,21 @@
 import * as infoCreators from '../infoCreators';
-import compareArrays, { findBasedOnLocation, areArraysEqual, findLineToInsertAfter } from './index';
+import compareArrays, { findBasedOnLocation, areLocationsEqual, findLineToInsertAfter } from './index';
 
 describe('compareArrays of entries', () => {
 	it('correctly returns the answer for lines that should receive OK and DIFFERENT', () => {
 
 		const lData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'John',
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 			}
@@ -19,12 +23,16 @@ describe('compareArrays of entries', () => {
 
 		const rData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'Mary',
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 			}
@@ -32,13 +40,17 @@ describe('compareArrays of entries', () => {
 
 		const expected = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'John',
 				info: infoCreators.different('Mary')
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 				info: infoCreators.ok()
@@ -52,12 +64,16 @@ describe('compareArrays of entries', () => {
 
 		const lData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'John',
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 			}
@@ -65,7 +81,9 @@ describe('compareArrays of entries', () => {
 
 		const rData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Watson',
 			}
@@ -73,13 +91,17 @@ describe('compareArrays of entries', () => {
 
 		const expected = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'John',
 				info: infoCreators.missing()
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 				info: infoCreators.different('Watson')
@@ -93,12 +115,16 @@ describe('compareArrays of entries', () => {
 
 		const lData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'John',
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 			}
@@ -106,17 +132,24 @@ describe('compareArrays of entries', () => {
 
 		const rData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'John',
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 			},
 			{
-				location: ['address'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'address', type: 'object'}
+				],
 				name: 'city',
 				value: 'NY',
 			}
@@ -125,19 +158,26 @@ describe('compareArrays of entries', () => {
 
 		const expected = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'John',
 				info: infoCreators.ok()
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 				info: infoCreators.ok()
 			},
 			{
-				location: ['address'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'address', type: 'object'}
+				],
 				name: 'city',
 				value: 'NY',
 				info: infoCreators.extraneous()
@@ -151,22 +191,32 @@ describe('compareArrays of entries', () => {
 
 		const lData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'},
+				],
 				name: 'name',
 				value: 'John',
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'},
+				],
 				name: 'surname',
 				value: 'Doe',
 			},
 			{
-				location: ['address'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'address', type: 'object'},
+				],
 				name: 'city',
 				value: 'NY',
 			},
 			{
-				location: ['wife'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'wife', type: 'object'},
+				],
 				name: 'name',
 				value: 'Joana',
 			},
@@ -175,27 +225,40 @@ describe('compareArrays of entries', () => {
 
 		const rData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'},
+				],
 				name: 'name',
 				value: 'John',
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'},
+				],
 				name: 'surname',
 				value: 'Doe',
 			},
 			{
-				location: ['address'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'address', type: 'object'},
+				],
 				name: 'state',
 				value: 'NY',
 			},
 			{
-				location: ['address'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'address', type: 'object'},
+				],
 					name: 'city',
 					value: 'NY',
 			},
 			{
-				location: ['wife'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'wife', type: 'object'},
+				],
 				name: 'name',
 				value: 'Joana',
 			},
@@ -206,31 +269,44 @@ describe('compareArrays of entries', () => {
 
 		const expected = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'},
+				],
 				name: 'name',
 				value: 'John',
 				info: infoCreators.ok()
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'},
+				],
 				name: 'surname',
 				value: 'Doe',
 				info: infoCreators.ok()
 			},
 			{
-				location: ['address'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'address', type: 'object'},
+				],
 				name: 'city',
 				value: 'NY',
 				info: infoCreators.ok()
 			},
 			{
-				location: ['address'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'address', type: 'object'},
+				],
 				name: 'state',
 				value: 'NY',
 				info: infoCreators.extraneous()
 			},
 			{
-				location: ['wife'],
+				location: [
+					{partial: '', type: 'object'},
+					{partial: 'wife', type: 'object'},
+				],
 				name: 'name',
 				value: 'Joana',
 				info: infoCreators.ok()
@@ -291,19 +367,25 @@ describe('findLineToInsertAfter', () => {
 describe('findBasedOnLocation', () => {
 	it('return the line on the given object', () => {
 		const line = {
-			location: [],
+			location: [
+				{partial: '', type: 'object'}
+			],
 			name: 'name',
 			value: 'John',
 		};
 
 		const rData = [
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'name',
 				value: 'Mary',
 			},
 			{
-				location: [],
+				location: [
+					{partial: '', type: 'object'}
+				],
 				name: 'surname',
 				value: 'Doe',
 			}
@@ -313,47 +395,40 @@ describe('findBasedOnLocation', () => {
 	});
 })
 
-describe('areArraysEqual', () => {
+describe('areLocationsEqual', () => {
 	it('works for a true case', () => {
 		const left = [
-			'one',
-			'two'
+			{partial: '', type: 'object'}
 		];
 
 		const right = [
-			'one',
-			'two'
+			{partial: '', type: 'object'}
 		];
 
-		expect(areArraysEqual(left, right)).toBe(true);
+		expect(areLocationsEqual(left, right)).toBe(true);
 	})
 
 	it('works for a false case', () => {
 		const left = [
-			'one',
-			'three'
+			{partial: 'address', type: 'object'}
 		];
 
 		const right = [
-			'one',
-			'two'
+			{partial: '', type: 'object'}
 		];
 
-		expect(areArraysEqual(left, right)).toBe(false);
+		expect(areLocationsEqual(left, right)).toBe(false);
 	})
 
 	it('works for a false case, where right side contains left', () => {
 		const left = [
-			'one',
-			'two'
+			{partial: '', type: 'object'},
 		];
-
 		const right = [
-			'one',
-			'two',
-			'three'
+			{partial: '', type: 'object'},
+			{partial: 'address', type: 'object'},
 		];
 
-		expect(areArraysEqual(left, right)).toBe(false);
+		expect(areLocationsEqual(left, right)).toBe(false);
 	})
 })

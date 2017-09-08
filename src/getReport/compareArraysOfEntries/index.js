@@ -29,16 +29,23 @@ export default (lData, rData) => {
 
 export const findBasedOnLocation = (arr, item) => {
 	return arr.find(({ location, name }) => {
-		return (areArraysEqual(location, item.location)) && (name === item.name)
+		return (areLocationsEqual(location, item.location)) && (name === item.name)
 	})
 }
 
-export const areArraysEqual = (left, right) => {
+export const areLocationsEqual = (left, right) => {
 	if (left.length !== right.length) {
 		return false;
 	}
 	return left.every((element) => {
-		return right.indexOf(element) >= 0;
+		return right.find(({partial, type}) => {
+			if (
+				element.partial === partial &&
+				element.type === type
+			) {
+				return true
+			}
+		})
 	})
 };
 
@@ -61,7 +68,7 @@ export const findLineToInsertAfter = (arr, { location: extraneousLocation }) => 
 		const partialExtraneousLocation = extraneousLocation.slice(0,i);
 
 		arr.forEach((line, k, arr) => {
-			if (areArraysEqual(line.location, partialExtraneousLocation)) {
+			if (areLocationsEqual(line.location, partialExtraneousLocation)) {
 				matchingLineIndex = k
 			}
 		})
