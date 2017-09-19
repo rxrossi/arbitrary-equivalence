@@ -2,7 +2,7 @@ import colors from 'colors';
 import * as infoCreators from '../infoCreators';
 import objLineToStr, { indent } from './index';
 
-describe('reportToConsoleLog', () => {
+describe('reportToConsoleLog single line', () => {
 	describe('Pairs and elements, nested or on root', () => {
 
 		it('prints a normal pair correctly', () => {
