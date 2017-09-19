@@ -1,4 +1,8 @@
-Steps
-getArrayOfLines //adding type element or pair now is not useful, this can be added later
-compareArraysOfLines
-addBrackets and types 
+# Indentation 
+
+```
+fn indentation(level)
+Level 0 is for root, for opening brackets
+Level 1 is for elements or pairs on the root
+```
+

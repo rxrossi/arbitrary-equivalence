@@ -141,7 +141,7 @@ describe('reportToConsoleLog', () => {
 				' '
 				+
 				'was expected, received'
-			  +
+				+
 				' '
 				+
 				'Mary'.yellow
@@ -193,7 +193,7 @@ describe('reportToConsoleLog', () => {
 				' '
 				+
 				'was expected, received'
-			  +
+				+
 				' '
 				+
 				'NYC'.yellow
@@ -231,3 +231,4 @@ describe('reportToConsoleLog', () => {
 
 	})
 })
+
