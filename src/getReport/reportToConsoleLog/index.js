@@ -1,6 +1,6 @@
 import * as infoCreators from '../infoCreators';
 
-export default (line) => {
+export const objLineToStr = (line) => {
 
 	let str = getStart(line);
 	str += getIndent(line)

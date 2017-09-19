@@ -1,6 +1,6 @@
 import colors from 'colors';
 import * as infoCreators from '../infoCreators';
-import objLineToStr, { indent } from './index';
+import { indent, objLineToStr } from './index';
 
 describe('reportToConsoleLog single line', () => {
 	describe('Pairs and elements, nested or on root', () => {
