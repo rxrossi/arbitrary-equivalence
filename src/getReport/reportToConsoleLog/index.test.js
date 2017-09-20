@@ -2,6 +2,11 @@ import colors from 'colors';
 import * as infoCreators from '../infoCreators';
 import { indent, objLineToStr } from './index';
 
+describe('reportToConsoleLog (multiple lines)', () => {
+	//get a multiple line report to try
+	//at first try to just console.log it, don't write a test
+})
+
 describe('reportToConsoleLog single line', () => {
 	describe('Pairs and elements, nested or on root', () => {
 
@@ -335,6 +340,7 @@ describe('reportToConsoleLog single line', () => {
 			expect(answer).toEqual(expected);
 		})
 	})
+
 })
 
 describe('Indent function', () => {
