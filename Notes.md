@@ -7,4 +7,4 @@ Level 1 is for elements or pairs on the root
 ```
 
 # TODO
-- check how array values are being converted, then work on the reportToConsoleLog test error
+- Work on processing multiple lines on reportToConsoleLog
