@@ -11,6 +11,7 @@ export default (lines) => {
 			arr[i-1],
 			arr[i],
 			info
+
 		))
 
 		returnLines.push(line)
@@ -36,7 +37,7 @@ export const getLinesWithSameStartingLocation = (givenLocArr, lines) => {
 			)
 		)
 	})
-}
+};
 
 export const getOverallInfoOfSubset = (lines, finalInfo) => {
 	lines.forEach(({info}) => {
@@ -46,6 +47,9 @@ export const getOverallInfoOfSubset = (lines, finalInfo) => {
 			finalInfo = infoCreators.different();
 		}
 	})
+	if (finalInfo.type === infoCreators.different().type) {
+		return infoCreators.different();
+	}
 	return finalInfo;
 };
 

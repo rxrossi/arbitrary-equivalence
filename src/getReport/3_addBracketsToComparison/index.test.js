@@ -5,7 +5,6 @@ import addBrackets, {
 	getLinesWithSameStartingLocation
 } from './index.js';
 
-
 import * as infoCreators from '../infoCreators';
 
 describe('getLinesWithSameStartingLocation', () => {
@@ -311,6 +310,21 @@ describe('getOverallInfoOfSubset', () => {
 		];
 		const answer = getOverallInfoOfSubset(lines);
 		expect(answer).toEqual(infoCreators.ok());
+	});
+
+	it('works for an DIFFERENT case with a single pair in the object', () => {
+		const lines = [
+			{
+				location: [
+					{partial: '', type: 'object'}
+				],
+				name: 'name',
+				value: 'John',
+				info: infoCreators.different('Mary')
+			},
+		];
+		const answer = getOverallInfoOfSubset(lines);
+		expect(answer).toEqual(infoCreators.different());
 	})
 
 	it('works for an DIFFERENT case', () => {
