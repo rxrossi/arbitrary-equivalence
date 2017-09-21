@@ -8,10 +8,6 @@ import {
 
 import * as infoCreators from '../infoCreators';
 
-describe('convertToReport', () => {
-
-})
-
 describe('getLinesWithSameStartingLocation', () => {
 	it('works when location is root', () => {
 		const location = [
