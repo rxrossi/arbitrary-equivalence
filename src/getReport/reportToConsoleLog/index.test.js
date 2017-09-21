@@ -1,11 +1,72 @@
 import colors from 'colors';
 
 import * as infoCreators from '../infoCreators';
-import { indent, objLineToStr } from './index';
+import linesArrToStr, { indent, objLineToStr } from './index';
 
 describe('reportToConsoleLog (multiple lines)', () => {
 	//get a multiple line report to try
 	//at first try to just console.log it, don't write a test
+	it('a single pair object', () => {
+		const lines = [
+			{
+				location: [
+					{partial: '', type: 'object'}
+				],
+				name: '',
+				value: '{',
+				info: infoCreators.missing()
+			},
+			{
+				location: [
+					{partial: '', type: 'object'}
+				],
+				name: 'name',
+				value: 'John',
+				info: infoCreators.missing()
+			},
+			{
+				location: [
+					{partial: '', type: 'object'}
+				],
+				name: '',
+				value: '}',
+				info: infoCreators.missing()
+			}
+		];
+
+		const expectedPair =
+			' + '.inverse.green
+			+
+			indent(1).green
+			+
+			'name: John'.green;
+
+		const expectedOpening =
+			' + '.inverse.green
+			+
+			indent().green
+			+
+			'{'.green;
+
+		const expectedClosing =
+			' + '.inverse.green
+			+
+			indent().green
+			+
+			'}'.green;
+
+		const expected =
+			expectedOpening+'\n'+
+			expectedPair+'\n'+
+			expectedClosing+'\n';
+
+		const answer = linesArrToStr(lines);
+
+		// console.log(answer)
+		// console.log(expected);
+		expect(answer).toEqual(expected);
+
+	})
 })
 
 describe('reportToConsoleLog single line', () => {

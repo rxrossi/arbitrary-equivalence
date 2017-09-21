@@ -1,5 +1,16 @@
 import * as infoCreators from '../infoCreators';
 
+export default (lines) => {
+	let str='';
+
+	lines.forEach(line => {
+		str += objLineToStr(line)+'\n';
+	})
+
+	return str;
+}
+
+
 export const objLineToStr = (line) => {
 
 	let str = getStart(line);
@@ -8,7 +19,7 @@ export const objLineToStr = (line) => {
 
 	return str;
 
-}
+};
 
 function getEnd({name, value, info, location}) {
 
@@ -24,8 +35,7 @@ function getEnd({name, value, info, location}) {
 	}
 
 	return str
-}
-
+};
 
 function getStart ({info}) {
 
@@ -57,7 +67,7 @@ function getIndent(line) {
 			value === '{' ||
 			value === '}'
 	}
-}
+};
 
 export const indent = (level = 0) => {
 	let spaces = "——";
@@ -85,4 +95,4 @@ function colorize(str, info) {
 	}
 
 	return str;
-}
+};
