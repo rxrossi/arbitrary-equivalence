@@ -1,6 +1,6 @@
 import * as infoCreators from '../infoCreators';
 
-export const addBrackets = (lines) => {
+export default (lines) => {
 	const returnLines = []
 
 	lines.forEach((line, i, arr) => {

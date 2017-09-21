@@ -1,4 +1,5 @@
 import * as infoCreators from '../infoCreators';
+import colors from 'colors';
 
 export default (lines) => {
 	let str='';

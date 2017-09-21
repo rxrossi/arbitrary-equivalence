@@ -1,10 +1,10 @@
-import {
-	addBrackets,
+import addBrackets, {
 	getOpeningBracketLines,
 	getClosingBracketLines,
 	getOverallInfoOfSubset,
 	getLinesWithSameStartingLocation
 } from './index.js';
+
 
 import * as infoCreators from '../infoCreators';
 
