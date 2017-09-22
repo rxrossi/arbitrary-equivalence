@@ -253,6 +253,7 @@ describe('reportToConsoleLog single line', () => {
 
 		})
 
+
 	})
 
 	describe('Opening brackets', () => {
@@ -328,7 +329,31 @@ describe('reportToConsoleLog single line', () => {
 			expect(answer).toEqual(expected);
 		})
 
-	})
+		it('prints an array inside of an array', () => {
+			const line = {
+				location: [
+					{partial: '', type: 'array'},
+					{partial: '0', type: 'array'}
+				],
+				name: '0',
+				value: '[',
+				info: infoCreators.different()
+			};
+
+			const answer = objLineToStr(line);
+
+			const expected =
+				' ! '.inverse.yellow
+				+
+				indent(1).yellow
+				+
+				'['.yellow;
+
+			// console.log(expected);
+			expect(answer).toEqual(expected);
+			// console.log(answer);
+		});
+	});
 
 	describe('Closing Brackets', () => {
 		it('prints the closing line and root object', () => {

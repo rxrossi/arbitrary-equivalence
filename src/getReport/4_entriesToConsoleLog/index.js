@@ -26,7 +26,7 @@ function getEnd({name, value, info, location}) {
 
 	let str = colorize(`${name}: ${value}`, info);
 
-	if (name === '') {
+	if (name === '' || (isElement(location)) && isBracket(value)) {
 		str = colorize(`${value}`, info);
 	}
 
@@ -38,8 +38,12 @@ function getEnd({name, value, info, location}) {
 	return str
 };
 
-function getStart ({info}) {
+function isElement(location) {
+	const index = location.length-2 > 0 ? location.length-2 : 0;
+	return location[index].type === 'array';
+}
 
+function getStart ({info}) {
 	switch (info.type) {
 		case infoCreators.ok().type:
 			return colorize('   '.inverse, info);
@@ -54,7 +58,7 @@ function getStart ({info}) {
 
 function getIndent(line) {
 	let str;
-	if (isBracket(line)) {
+	if (isBracket(line.value)) {
 		str = indent(line.location.length -1)
 	} else {
 		str = indent(line.location.length);
@@ -62,14 +66,14 @@ function getIndent(line) {
 
 	return colorize(str, line.info);
 
-	function isBracket({value}) {
-		return value === '[' ||
-			value === ']' ||
-			value === '{' ||
-			value === '}'
-	}
 };
 
+function isBracket(value) {
+	return value === '[' ||
+		value === ']' ||
+		value === '{' ||
+		value === '}'
+}
 export const indent = (level = 0) => {
 	let spaces = "——";
 	for (var i = 0; i < level; ++i) {

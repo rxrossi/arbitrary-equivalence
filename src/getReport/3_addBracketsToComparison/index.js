@@ -59,14 +59,18 @@ export const getOpeningBracketLines = (
 	info
 ) => {
 
-	const nestsToOpen = currentLine.location.filter(({ partial, type }) =>
+	const filteredLocation = currentLine.location.filter(({type}) => type !== 'string');
+
+	const nestsToOpen = filteredLocation.filter(({ partial, type }) =>
 		!previousLine.location.find(({ partial:prevPartial, type:prevType }) =>
-			prevPartial === partial && prevType === type
+			prevPartial === partial && prevType === type && type !== 'string'
 		)
 	);
 
+	// console.log('a', nestsToOpen)
+
 	return [
-		...createLine(currentLine.location, nestsToOpen, 'open', info)
+		...createLine(filteredLocation, nestsToOpen, 'open', info)
 	]
 
 };
@@ -77,14 +81,16 @@ export const getClosingBracketLines = (
 	info
 ) => {
 
-	const nestsToClose = currentLine.location.filter(({ partial, type }) =>
+	const filteredLocation = currentLine.location.filter(({type}) => type !== 'string');
+
+	const nestsToClose = filteredLocation.filter(({ partial, type }) =>
 		!nextLine.location.find(({ partial:prevPartial, type:prevType }) =>
-			prevPartial === partial && prevType === type
+			prevPartial === partial && prevType === type && type !== 'string'
 		)
 	);
 
 	return [
-		...createLine(currentLine.location, nestsToClose, 'close', info).slice().reverse()
+		...createLine(filteredLocation, nestsToClose, 'close', info).slice().reverse()
 	]
 
 }

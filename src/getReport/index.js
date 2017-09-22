@@ -7,7 +7,9 @@ export default (lData, rData) => {
 	const lDataArr = getArrayOfEntries(lData);
 	const rDataArr = getArrayOfEntries(rData);
 	const vsNoBrkts = compareArrayOfEntries(lDataArr, rDataArr);
+	// console.log(vsNoBrkts[0]);
 	const vsWithBrkts = addBracketsToComparison(vsNoBrkts);
+	// console.log(vsWithBrkts);
 	const str = entriesToConsoleLog(vsWithBrkts);
 
 	return str;

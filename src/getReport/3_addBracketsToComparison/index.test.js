@@ -177,8 +177,55 @@ describe('addBrackets', () => {
 		const answer = addBrackets(lines);
 
 		expect(answer).toEqual(expected);
-	});
 
+	});
+	it('works for a simple array', () => {
+
+		const lines = [
+			{
+				location: [
+					{partial: '', type: 'array'},
+					{partial: '0', type: 'string'}
+				],
+				name: '',
+				value: 'John',
+				info: infoCreators.ok()
+			}
+		];
+
+		const expected = [
+			{
+				location: [
+					{partial: '', type: 'array'}
+				],
+				name: '',
+				value: '[',
+				info: infoCreators.ok()
+			},
+			{
+				location: [
+					{partial: '', type: 'array'},
+					{partial: '0', type: 'string'}
+				],
+				name: '',
+				value: 'John',
+				info: infoCreators.ok()
+			},
+			{
+				location: [
+					{partial: '', type: 'array'}
+				],
+				name: '',
+				value: ']',
+				info: infoCreators.ok()
+			}
+		];
+
+		const answer = addBrackets(lines);
+
+		expect(answer).toEqual(expected);
+
+	});
 	it('works for a more complex object', () => {
 
 		const lines = [
@@ -414,6 +461,34 @@ describe('getClosingBracketLines', () => {
 		expect(answer).toEqual(expected);
 	})
 
+	it('works when it is the last line of an array', () => {
+
+		const currentLine = {
+			location: [
+				{partial: '', type: 'array'},
+				{partial: '0', type: 'string'}
+			],
+			name: '',
+			value: 'John',
+			info: infoCreators.ok()
+		};
+
+		const expected = [
+			{
+				location: [
+					{partial: '', type: 'array'}
+				],
+				name: '',
+				value: ']',
+				info: infoCreators.ok()
+			}
+		];
+
+		const answer = getClosingBracketLines(currentLine, undefined, infoCreators.ok());
+		// console.log(answer[0])
+		expect(answer).toEqual(expected);
+	})
+
 	it('works when it is the last line of an object', () => {
 		const currentLine = {
 			location: [
@@ -502,12 +577,15 @@ describe('getOpeningBracketLines', () => {
 	})
 
 	it('works when it is the first line of an array', () => {
+
 		const currentLine = {
 			location: [
-				{partial: '', type: 'array'}
+				{partial: '', type: 'array'},
+				{partial: '0', type: 'string'}
 			],
 			name: '',
 			value: 'John',
+			info: infoCreators.ok()
 		};
 
 		const expected = [
@@ -517,10 +595,12 @@ describe('getOpeningBracketLines', () => {
 				],
 				name: '',
 				value: '[',
+				info: infoCreators.ok()
 			}
 		];
 
-		const answer = getOpeningBracketLines(undefined, currentLine);
+		const answer = getOpeningBracketLines(undefined, currentLine, infoCreators.ok());
+		// console.log(answer[0])
 		expect(answer).toEqual(expected);
 	})
 
