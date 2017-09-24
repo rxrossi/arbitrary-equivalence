@@ -12,14 +12,15 @@ describe('getArrayOfEntries', () => {
 			const expected = [
 				{
 					location: [
-						{partial: '', type: 'object'}
+						{partial: '', type: 'object'},
+						{partial: 'name', type: 'string'}
 					],
-					name: 'name',
 					value: 'John',
 				},
 				{
 					location: [
-						{partial: '', type: 'object'}
+						{partial: '', type: 'object'},
+						{partial: 'name', type: 'string'}
 					],
 					name: 'surname',
 					value: 'Doe',
