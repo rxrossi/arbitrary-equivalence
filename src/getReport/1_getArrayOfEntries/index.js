@@ -1,10 +1,9 @@
 function getStructure (structure, arr = [], currentLocation) {
 
 	if (!currentLocation) {
-		currentLocation = [{
-			partial: '',
-			type: getType(structure)
-		}]
+		currentLocation = [
+			['', getType(structure)]
+		];
 	}
 
 	Object.entries(structure).forEach(([name, value]) => {
@@ -19,13 +18,9 @@ function getStructure (structure, arr = [], currentLocation) {
 }
 
 function createLine (name, value, structure, location) {
-	if (isRegularElement(structure)) {
-		location = [...location, createLocation(name, name)]
-		name = ''
-	}
+	location = [...location, createLocation(name, value)]
 	return {
 		location: location,
-		name,
 		value,
 	}
 }
@@ -34,10 +29,7 @@ export default getStructure;
 
 function createLocation(location, structure) {
 	// console.log(location, structure)
-	return {
-		partial: location,
-		type: getType(structure)
-	}
+	return [location, getType(structure)]
 }
 
 function getValueByPath (obj, arrOfPath) {
@@ -63,11 +55,4 @@ function getType (value) {
 		return 'array';
 	}
 	return typeof value;
-}
-
-function isRegularElement(value) {
-	if (getType(value) === 'array') {
-		return true
-	}
-	return false;
 }

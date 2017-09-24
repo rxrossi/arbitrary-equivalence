@@ -220,7 +220,6 @@ describe('compareArrays of entries', () => {
 				name: 'name',
 				value: 'Joana',
 			},
-
 		];
 
 		const rData = [
@@ -262,10 +261,7 @@ describe('compareArrays of entries', () => {
 				name: 'name',
 				value: 'Joana',
 			},
-
 		];
-
-
 
 		const expected = [
 			{
@@ -315,7 +311,6 @@ describe('compareArrays of entries', () => {
 
 		expect(compareArrays(lData, rData)).toEqual(expected);
 	})
-
 })
 
 describe('findLineToInsertAfter', () => {

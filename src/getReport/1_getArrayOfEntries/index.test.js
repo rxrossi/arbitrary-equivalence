@@ -1,222 +1,296 @@
 import getArrayOfEntries from './index';
 
 describe('getArrayOfEntries', () => {
-	describe('plain structure (no nests)', () => {
-		it('correctly converts a object', () => {
 
-			const obj = {
-				name: 'John',
-				surname: 'Doe'
-			};
+	describe('Non Nested Structures', () => {
+
+		it('works with an array of strings', () => {
+			const arr = [
+				'John',
+				'Mary',
+			];
 
 			const expected = [
 				{
 					location: [
-						{partial: '', type: 'object'},
-						{partial: 'name', type: 'string'}
+						['', 'array'],
+						['0', 'string'],
 					],
 					value: 'John',
 				},
 				{
 					location: [
-						{partial: '', type: 'object'},
-						{partial: 'name', type: 'string'}
+						['', 'array'],
+						['1', 'string'],
 					],
-					name: 'surname',
-					value: 'Doe',
+					value: 'Mary',
 				}
 			];
 
-			const answer = getArrayOfEntries(obj);
-			// console.log(answer[0])
-
+			const answer = getArrayOfEntries(arr);
 			expect(answer).toEqual(expected);
 
-		})
+		});
 
-		it('correctly converts a plain array', () => {
+		it('works with an array of strings and numbers', () => {
 			const arr = [
-				'one',
-				'two'
+				0,
+				1,
+				'third'
 			];
 
 			const expected = [
 				{
 					location: [
-						{partial: '', type: 'array'},
-						{partial: '0', type: 'string'}
+						['', 'array'],
+						['0', 'number'],
 					],
-					name: '',
-					value: 'one',
+					value: 0,
 				},
 				{
 					location: [
-						{partial: '', type: 'array'},
-						{partial: '1', type: 'string'}
+						['', 'array'],
+						['1', 'number'],
 					],
-					name: '',
-					value: 'two',
+					value: 1,
+				},
+				{
+					location: [
+						['', 'array'],
+						['2', 'string'],
+					],
+					value: 'third',
 				}
 			];
 
-			const answer = getArrayOfEntries(arr)
+			const answer = getArrayOfEntries(arr);
 			expect(answer).toEqual(expected);
 		})
+
+		it('works with an object', () => {
+			const obj = {
+				name: 'John',
+				surname: 'Doe',
+				age: 30
+			};
+
+			const expected = [
+				{
+					location: [
+						['', 'object'],
+						['name', 'string'],
+					],
+					value: 'John',
+				},
+				{
+					location: [
+						['', 'object'],
+						['surname', 'string'],
+					],
+					value: 'Doe',
+				},
+				{
+					location: [
+						['', 'object'],
+						['age', 'number'],
+					],
+					value: 30,
+				}
+			];
+
+			const answer = getArrayOfEntries(obj);
+			expect(answer).toEqual(expected);
+		});
+
 	});
 
-	describe('nested structures', () => {
-		it('correctly converts object with nested object', () => {
+	describe('Nested Structures', () => {
 
-			const obj = {
-				name: 'John',
-				surname: 'Doe',
-				address: {
-					city: 'NYC',
-					state: 'NY',
-				}
-			};
+		describe('Root is Array', () => {
 
-			const expected = [
-				{
-					location: [
-						{partial:'', type:'object'}
+			it('works for an array of arrays', () => {
+				const arr = [
+					[
+						'John',
+						'Mary'
 					],
-					name: 'name',
-					value: 'John',
-				},
-				{
-					location: [
-						{partial:'', type:'object'}
+					[
+						'John2',
+						'Mary2'
 					],
-					name: 'surname',
-					value: 'Doe',
-				},
-				{
-					location: [
-						{partial:'', type:'object'},
-						{partial:'address', type:'object'}
+				];
+
+				const expected = [
+					{
+						location: [
+							['', 'array'],
+							['0', 'array'],
+							['0', 'string'],
+						],
+						value: 'John',
+					},
+					{
+						location: [
+							['', 'array'],
+							['0', 'array'],
+							['1', 'string'],
+						],
+						value: 'Mary',
+					},
+					{
+						location: [
+							['', 'array'],
+							['1', 'array'],
+							['0', 'string'],
+						],
+						value: 'John2',
+					},
+					{
+						location: [
+							['', 'array'],
+							['1', 'array'],
+							['1', 'string'],
+						],
+						value: 'Mary2',
+					},
+				];
+
+				const answer = getArrayOfEntries(arr);
+				expect(answer).toEqual(expected);
+
+			});
+
+			it('works for an array of elements', () => {
+				const arr = [
+					{name: 'John', surname: 'Doe'},
+					{name: 'Mary', surname: 'Connor'}
+				];
+
+				const expected = [
+					{
+						location: [
+							['', 'array'],
+							['0', 'object'],
+							['name', 'string'],
+						],
+						value: 'John',
+					},
+					{
+						location: [
+							['', 'array'],
+							['0', 'object'],
+							['surname', 'string'],
+						],
+						value: 'Doe',
+					},
+					{
+						location: [
+							['', 'array'],
+							['1', 'object'],
+							['name', 'string'],
+						],
+						value: 'Mary',
+					},
+					{
+						location: [
+							['', 'array'],
+							['1', 'object'],
+							['surname', 'string'],
+						],
+						value: 'Connor',
+					},
+				];
+
+				const answer = getArrayOfEntries(arr);
+				expect(answer).toEqual(expected);
+
+			});
+
+		});
+
+		describe('Root is Object', () => {
+
+			it('works for an object with nested object', () => {
+				const obj = {
+					name: 'John',
+					address: {
+						city: 'Piracicaba',
+						state: 'São Paulo',
+					},
+				};
+
+				const expected = [
+					{
+						location: [
+							['', 'object'],
+							['name', 'string'],
+						],
+						value: 'John',
+					},
+					{
+						location: [
+							['', 'object'],
+							['address', 'object'],
+							['city', 'string'],
+						],
+						value: 'Piracicaba',
+					},
+					{
+						location: [
+							['', 'object'],
+							['address', 'object'],
+							['state', 'string'],
+						],
+						value: 'São Paulo',
+					},
+				];
+
+				const answer = getArrayOfEntries(obj);
+				expect(answer).toEqual(expected);
+			});
+
+			it('works for an object with nested array', () => {
+				const obj = {
+					name: 'John',
+					sons: [
+						'Jenny',
+						'Carl'
 					],
-					name: 'city',
-					value: 'NYC',
-				},
-				{
-					location: [
-						{partial:'', type:'object'},
-						{partial:'address', type:'object'}
-					],
-					name: 'state',
-					value: 'NY',
-				},
-			];
+				};
 
-			const answer = getArrayOfEntries(obj);
+				const expected = [
+					{
+						location: [
+							['', 'object'],
+							['name', 'string'],
+						],
+						value: 'John',
+					},
+					{
+						location: [
+							['', 'object'],
+							['sons', 'array'],
+							['0', 'string'],
+						],
+						value: 'Jenny',
+					},
+					{
+						location: [
+							['', 'object'],
+							['sons', 'array'],
+							['1', 'string'],
+						],
+						value: 'Carl',
+					},
+				];
 
-			expect(answer).toEqual(expected);
+				const answer = getArrayOfEntries(obj);
+				expect(answer).toEqual(expected);
 
-		})
+			});
 
-		it('correctly converts object with nested array', () => {
+		});
 
-			const obj = {
-				name: 'John',
-				surname: 'Doe',
-				sons: [
-					'Kathy',
-					'Monique'
-				]
-			};
+	});
 
-			const expected = [
-				{
-					location: [
-						{partial:'', type:'object'},
-					],
-					name: 'name',
-					value: 'John',
-				},
-				{
-					location: [
-						{partial:'', type:'object'},
-					],
-					name: 'surname',
-					value: 'Doe',
-				},
-				{
-					location: [
-						{partial:'', type:'object'},
-						{partial:'sons', type:'array'},
-						{partial:'0', type:'string'},
-					],
-					name: '',
-					value: 'Kathy',
-				},
-				{
-					location: [
-						{partial:'', type:'object'},
-						{partial:'sons', type:'array'},
-						{partial:'1', type:'string'},
-					],
-					name: '',
-					value: 'Monique',
-				},
-			];
-
-			const answer = getArrayOfEntries(obj);
-
-			expect(answer).toEqual(expected);
-
-		})
-	})
-
-	it('correctly convets an array where each element is a object', () => {
-		const people = [
-			{name: 'John', city: 'NY'},
-			{name: 'Bart', city: 'Springfield'},
-			'three'
-		];
-		const expected = [
-			{
-				location: [
-					{partial:'', type:'array'},
-					{partial:'0', type:'object'}
-				],
-				name: 'name',
-				value: 'John',
-			},
-			{
-				location: [
-					{partial:'', type:'array'},
-					{partial:'0', type:'object'}
-				],
-				name: 'city',
-				value: 'NY',
-			},
-			{
-				location: [
-					{partial:'', type:'array'},
-					{partial:'1', type:'object'}
-				],
-				name: 'name',
-				value: 'Bart',
-			},
-			{
-				location: [
-					{partial:'', type:'array'},
-					{partial:'1', type:'object'}
-				],
-				name: 'city',
-				value: 'Springfield',
-			},
-			{
-				location: [
-					{partial:'', type:'array'},
-					{partial:'2', type:'string'}
-				],
-				name: '',
-				value: 'three',
-			}
-		]
-		const answer = getArrayOfEntries(people)
-		expect(answer).toEqual(expected);
-	})
-})
+});
