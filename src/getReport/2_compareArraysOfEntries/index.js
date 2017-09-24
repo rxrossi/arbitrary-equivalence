@@ -27,26 +27,13 @@ export default (lData, rData) => {
 	return finalAnswer;
 }
 
-export const findBasedOnLocation = (arr, item) => {
-	return arr.find(({ location, name }) => {
-		return (areLocationsEqual(location, item.location)) && (name === item.name)
-	})
-}
+export const findBasedOnLocation = (arr, desiredLocation) => arr.find(({ location }) => areLocationsEqual(location, desiredLocation))
 
 export const areLocationsEqual = (left, right) => {
 	if (left.length !== right.length) {
 		return false;
 	}
-	return left.every((element) => {
-		return right.find(({partial, type}) => {
-			if (
-				element.partial === partial &&
-				element.type === type
-			) {
-				return true
-			}
-		})
-	})
+	return left.every(([lPartial, lType]) => right.find(([rPartial, rType]) => lPartial === rPartial && lType === rType))
 };
 
 export const joinArrays = (left, right) => {
