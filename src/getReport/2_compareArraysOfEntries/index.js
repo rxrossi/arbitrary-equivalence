@@ -3,7 +3,7 @@ import * as infoCreators from '../infoCreators';
 export default (lData, rData) => {
 
 	const essential = lData.map((left) => {
-		const right = findBasedOnLocation(rData, left);
+		const right = findBasedOnLocation(rData, left.location);
 		if (!right) {
 			return Object.assign({}, left, { info: infoCreators.missing() })
 		}
@@ -17,7 +17,7 @@ export default (lData, rData) => {
 	})
 
 	const extraneous = rData.filter(right => {
-		return !findBasedOnLocation(lData, right);
+		return !findBasedOnLocation(lData, right.location);
 	}).map((line) => {
 		return Object.assign({}, line, { info: infoCreators.extraneous() })
 	})
@@ -51,16 +51,25 @@ export const joinArrays = (left, right) => {
 export const findLineToInsertAfter = (arr, { location: extraneousLocation }) => {
 	let matchingLineIndex;
 
+	extraneousLocation = keepOnlyArrayAndObjects(extraneousLocation);
+	// console.log(extraneousLocation)
 	for (var i = 0; i <= extraneousLocation.length; ++i) {
 		const partialExtraneousLocation = extraneousLocation.slice(0,i);
 
 		arr.forEach((line, k, arr) => {
-			if (areLocationsEqual(line.location, partialExtraneousLocation)) {
+			if (areLocationsEqual(keepOnlyArrayAndObjects(line.location), partialExtraneousLocation)) {
 				matchingLineIndex = k
 			}
 		})
 	}
 
-	return matchingLineIndex || arr.length -1;
+	if (matchingLineIndex === 0) {
+		return 0;
+	}
 
+	return matchingLineIndex || arr.length -1;
 }
+
+const keepOnlyArrayAndObjects = location =>
+	location.filter(([partial, type]) => type === 'array' || type === 'object')
+

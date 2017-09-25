@@ -3,7 +3,7 @@
 -- Incorrectly reporting when comparing an Array with An Object
 -- Error when comparing two arrays and the last element is missing, makes the brackets receive wrong information
 -- Comparing arrays inside object, when Different, makes the brackets to not receive correct info, some cases adds info to the closing, in other cases to the opening, seems that the bracket that will receive info is closer to the issue
-
+-- Should arrays be compared if something is just present or if it is present in the exact position
 # Notes
 Every string value should be printed with quotes
 check the possibility of the key of pairs no being considered strings
@@ -12,7 +12,7 @@ check the possibility of the key of pairs no being considered strings
 To change or not too
 
 ### Pros
-While taking the aproach as array ares (element position is on location and as others parts of location has types)
+While taking the approach as array ares (element position is on location and as others parts of location has types)
 It could make harder to add brackets later
 
 Ex (obj):
