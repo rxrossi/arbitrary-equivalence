@@ -28,12 +28,14 @@ export default (lines) => {
 };
 
 export const getLinesWithSameStartingLocation = (givenLocArr, lines) => {
+	givenLocArr = keepOnlyArrayAndObjects(givenLocArr);
+
 	return lines.filter((line) => {
 		const slicedLoc = line.location.slice(0, givenLocArr.length);
-		return givenLocArr.every(givenLocPart =>
-			slicedLoc.find(item =>
-				item.partial === givenLocPart.partial &&
-				item.type === givenLocPart.type
+		return givenLocArr.every(([gPart, gType]) =>
+			slicedLoc.find(([partFromLines, typeFromLines]) =>
+				gPart === partFromLines &&
+				gType === typeFromLines
 			)
 		)
 	})
@@ -59,18 +61,16 @@ export const getOpeningBracketLines = (
 	info
 ) => {
 
-	const filteredLocation = currentLine.location.filter(({type}) => type !== 'string');
+	const currentLineLoc = keepOnlyArrayAndObjects(currentLine.location);
 
-	const nestsToOpen = filteredLocation.filter(({ partial, type }) =>
-		!previousLine.location.find(({ partial:prevPartial, type:prevType }) =>
-			prevPartial === partial && prevType === type && type !== 'string'
+	const nestsToOpen = currentLineLoc.filter(([partial, type]) =>
+		!previousLine.location.find(([prevPartial, prevType]) =>
+			prevPartial === partial && prevType === type
 		)
 	);
 
-	// console.log('a', nestsToOpen)
-
 	return [
-		...createLine(filteredLocation, nestsToOpen, 'open', info)
+		...createLine(currentLineLoc, nestsToOpen, 'open', info)
 	]
 
 };
@@ -81,16 +81,16 @@ export const getClosingBracketLines = (
 	info
 ) => {
 
-	const filteredLocation = currentLine.location.filter(({type}) => type !== 'string');
+	const currentLineLoc = keepOnlyArrayAndObjects(currentLine.location);
 
-	const nestsToClose = filteredLocation.filter(({ partial, type }) =>
-		!nextLine.location.find(({ partial:prevPartial, type:prevType }) =>
-			prevPartial === partial && prevType === type && type !== 'string'
+	const nestsToClose = currentLineLoc.filter(([partial, type]) =>
+		!nextLine.location.find(([nextPartial, nextType]) =>
+			partial === nextPartial && type === nextType
 		)
 	);
 
 	return [
-		...createLine(filteredLocation, nestsToClose, 'close', info).slice().reverse()
+		...createLine(currentLineLoc, nestsToClose, 'close', info).slice().reverse()
 	]
 
 }
@@ -103,12 +103,11 @@ function createLine(
 
 		const keep = i + 1 + ( fullLocationArr.length - nestsToOpen.length)
 
-		const thisLocation = nestsToOpen[i];
+		const [thisPartial, thisType] = nestsToOpen[i];
 
 		returnLines.push({
 			location: fullLocationArr.slice(0, keep),
-			name: closeOrOpen === 'open' ? thisLocation.partial : '',
-			value: putBracket(thisLocation.type, closeOrOpen),
+			value: putBracket(thisType, closeOrOpen),
 			info
 		})
 
@@ -135,3 +134,6 @@ function createLine(
 export function readInfoFromLines(lines) {
 	return infoCreators.ok();
 }
+
+const keepOnlyArrayAndObjects = location =>
+	location.filter(([partial, type]) => type === 'array' || type === 'object')
