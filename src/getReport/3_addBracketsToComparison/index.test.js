@@ -8,7 +8,7 @@ import addBrackets, {
 import * as infoCreators from '../infoCreators';
 
 describe('addBrackets', () => {
-	it.only('works for a simple object', () => {
+	it('works for a simple object', () => {
 
 		const lines = [
 			{
@@ -67,7 +67,7 @@ describe('addBrackets', () => {
 
 	});
 
-	it.only('works for a simple array', () => {
+	it('works for a simple array', () => {
 		const arr = [
 			{
 				location: [
@@ -124,7 +124,7 @@ describe('addBrackets', () => {
 		expect(answer).toEqual(expected);
 	});
 
-	it.only('works for a more complex object', () => {
+	it('works for a more complex object', () => {
 		const arr = [
 			{
 				location: [
@@ -214,10 +214,7 @@ describe('addBrackets', () => {
 		];
 
 		const answer = addBrackets(arr);
-		console.log(
-			JSON.stringify(answer[answer.length-1], null, 2)
-		)
-		// expect(answer).toEqual(expected);
+		expect(answer).toEqual(expected);
 	});
 });
 
@@ -463,6 +460,7 @@ describe('getClosingBracketLines', () => {
 				['name', 'string']
 			],
 			value: 'John',
+			info: infoCreators.ok()
 		};
 
 		const expected = [
@@ -475,7 +473,7 @@ describe('getClosingBracketLines', () => {
 			}
 		];
 
-		const answer = getClosingBracketLines(currentLine, undefined, infoCreators.ok());
+		const answer = getClosingBracketLines(currentLine, undefined, [currentLine]);
 		expect(answer).toEqual(expected);
 	})
 
@@ -500,7 +498,7 @@ describe('getClosingBracketLines', () => {
 		}
 		];
 
-		const answer = getClosingBracketLines(currentLine, undefined, infoCreators.ok());
+		const answer = getClosingBracketLines(currentLine, undefined, [currentLine]);
 		// console.log(answer[0])
 		expect(answer).toEqual(expected);
 	})
@@ -513,6 +511,7 @@ describe('getClosingBracketLines', () => {
 				['city', 'string']
 			],
 			value: 'NYC',
+			info: infoCreators.ok()
 		};
 
 		const expected = [
@@ -533,7 +532,7 @@ describe('getClosingBracketLines', () => {
 			}
 		];
 
-		const answer = getClosingBracketLines(currentLine, undefined, infoCreators.ok());
+		const answer = getClosingBracketLines(currentLine, undefined, [currentLine]);
 		expect(answer).toEqual(expected);
 	})
 
@@ -565,9 +564,57 @@ describe('getClosingBracketLines', () => {
 		// console.log(JSON.stringify(answer, null, 2));
 		expect(answer).toEqual(expected);
 	})
+
+	it('correctly closes two brackets using the correct info (ok, different, missing or extraneous)', () => {
+		const arr = [
+			{
+				location: [
+					['', 'array'],
+					['0', 'object'],
+					['name', 'string']
+				],
+				value: 'John',
+				info: infoCreators.different('Carl')
+			},
+			{
+				location: [
+					['', 'array'],
+					['1', 'object'],
+					['name', 'string']
+				],
+				value: 'Mary',
+				info: infoCreators.ok()
+			}
+		];
+
+		const previousLine = arr[1];
+
+		const answer = getClosingBracketLines(previousLine, undefined, arr);
+		const expected = [
+			{
+				location: [
+					['', 'array'],
+					['1', 'object'],
+				],
+				value: '}',
+				info: infoCreators.ok()
+			},
+			{
+				location: [
+					['', 'array'],
+				],
+				value: ']',
+				info: infoCreators.different()
+			}
+		];
+
+		expect(answer).toEqual(expected);
+
+	})
 })
 
 describe('getOpeningBracketLines', () => {
+
 	it('works when it is the first line of an object', () => {
 		const currentLine = {
 			location: [
@@ -587,7 +634,7 @@ describe('getOpeningBracketLines', () => {
 			}
 		];
 
-		const answer = getOpeningBracketLines(undefined, currentLine, infoCreators.ok());
+		const answer = getOpeningBracketLines(undefined, currentLine, [currentLine]);
 		expect(answer).toEqual(expected);
 	})
 
@@ -611,7 +658,7 @@ describe('getOpeningBracketLines', () => {
 			}
 		];
 
-		const answer = getOpeningBracketLines(undefined, currentLine, infoCreators.ok());
+		const answer = getOpeningBracketLines(undefined, currentLine, [currentLine]);
 		expect(answer).toEqual(expected);
 	})
 
@@ -632,6 +679,7 @@ describe('getOpeningBracketLines', () => {
 					['', 'object']
 				],
 				value: '{',
+				info: infoCreators.ok()
 			},
 			{
 				location: [
@@ -639,10 +687,11 @@ describe('getOpeningBracketLines', () => {
 					['address', 'object'],
 				],
 				value: '{',
+				info: infoCreators.ok()
 			}
 		];
 
-		const answer = getOpeningBracketLines(undefined, currentLine);
+		const answer = getOpeningBracketLines(undefined, currentLine, [currentLine]);
 		// console.log(JSON.stringify(answer, null, 2))
 		expect(answer).toEqual(expected);
 	})
@@ -653,7 +702,8 @@ describe('getOpeningBracketLines', () => {
 				['', 'object'],
 				['name', 'string'],
 			],
-			value: 'John'
+			value: 'John',
+			info: infoCreators.ok()
 		};
 
 		const currentLine = {
@@ -663,19 +713,21 @@ describe('getOpeningBracketLines', () => {
 				['city', 'string'],
 			],
 			value: 'Piracicaba',
+			info: infoCreators.ok()
 		};
 
 		const expected = [
-		{
-			location: [
-				['', 'object'],
-				['address', 'object'],
-			],
-			value: '{',
-		}
+			{
+				location: [
+					['', 'object'],
+					['address', 'object'],
+				],
+				value: '{',
+				info: infoCreators.ok()
+			}
 		];
 
-		const answer = getOpeningBracketLines(previousLine, currentLine);
+		const answer = getOpeningBracketLines(previousLine, currentLine, [previousLine, currentLine]);
 		// console.log(JSON.stringify(answer, null, 2))
 		expect(answer).toEqual(expected);
 	})
@@ -688,6 +740,7 @@ describe('getOpeningBracketLines', () => {
 				['city', 'string']
 			],
 			value: 'dCITY',
+			info: infoCreators.ok()
 		};
 
 		const currentLine = {
@@ -698,16 +751,18 @@ describe('getOpeningBracketLines', () => {
 				['city', 'string']
 			],
 			value: 'NYC',
+			info: infoCreators.ok()
 		};
 
 		const expected = [
-		{
-			location: [
-				['', 'object'],
-				['regularAddress', 'object'],
-			],
-			value: '{',
-		},
+			{
+				location: [
+					['', 'object'],
+					['regularAddress', 'object'],
+				],
+				value: '{',
+				info: infoCreators.ok()
+			},
 			{
 				location: [
 					['', 'object'],
@@ -715,10 +770,11 @@ describe('getOpeningBracketLines', () => {
 					['regularSubAddress', 'object'],
 				],
 				value: '{',
+				info: infoCreators.ok()
 			},
 		];
 
-		const answer = getOpeningBracketLines(previousLine, currentLine);
+		const answer = getOpeningBracketLines(previousLine, currentLine, [currentLine, previousLine]);
 		// console.log(JSON.stringify(answer, null, 2))
 		expect(answer).toEqual(expected);
 	})
@@ -730,6 +786,7 @@ describe('getOpeningBracketLines', () => {
 				['0', 'string'],
 			],
 			value: 'John',
+			info: infoCreators.ok()
 		};
 		const currentLine = {
 			location: [
@@ -737,11 +794,12 @@ describe('getOpeningBracketLines', () => {
 				['1', 'string'],
 			],
 			value: 'Mary',
+			info: infoCreators.ok()
 		};
 
 		const expected = [];
 
-		const answer = getOpeningBracketLines(previousLine, currentLine);
+		const answer = getOpeningBracketLines(previousLine, currentLine, [currentLine, previousLine]);
 		expect(answer).toEqual(expected);
 	})
 

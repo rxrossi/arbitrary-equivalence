@@ -22,17 +22,27 @@ export const objLineToStr = (line) => {
 
 };
 
-function getEnd({name, value, info, location}) {
+function getEnd({value, info, location}) {
 
-	let str = colorize(`${name}: ${value}`, info);
+	const [ name, type ] = location[location.length-1];
 
-	if (name === '' || (isElement(location)) && isBracket(value)) {
-		str = colorize(`${value}`, info);
+	const printValue = type === 'string' ? `"${value}"` : value;
+
+	const comma = info.received || isOpeningBracket(value) || isRoot(location) ? '' : ','
+
+	let str = colorize(`${name}: ${printValue}${comma}`, info);
+
+	if (isElement(location)) {
+		str = colorize(`${name}: `.dim, info)+colorize(`${printValue}`, info);
+	} else if (isRoot(location) || isClosingBracket(value)) {
+		str = colorize(`${printValue}${comma}`, info);
 	}
 
+
 	if (info.received) {
+		const received = typeof info.received === 'string' ? `"${info.received}"` : info.received;
 		str += ' was expected, received '
-		str += colorize(info.received, info);
+		str += colorize(`${received},`, info);
 	}
 
 	return str
@@ -40,7 +50,12 @@ function getEnd({name, value, info, location}) {
 
 function isElement(location) {
 	const index = location.length-2 > 0 ? location.length-2 : 0;
-	return location[index].type === 'array';
+	const [ name, type ] = location[index];
+	return type === 'array'
+}
+
+function isRoot(location) {
+	return location.length === 1;
 }
 
 function getStart ({info}) {
@@ -58,11 +73,11 @@ function getStart ({info}) {
 
 function getIndent(line) {
 	let str;
-	if (isBracket(line.value)) {
-		str = indent(line.location.length -1)
-	} else {
-		str = indent(line.location.length);
-	}
+	// if (isBracket(line.value)) {
+	// 	str = indent(line.location.length -1)
+	// } else {
+		str = indent(line.location.length-1);
+	// }
 
 	return colorize(str, line.info);
 
@@ -74,6 +89,18 @@ function isBracket(value) {
 		value === '{' ||
 		value === '}'
 }
+
+function isOpeningBracket(value) {
+	return value === '[' ||
+	value === '{'
+}
+
+function isClosingBracket(value) {
+	return value === ']' ||
+	value === '}'
+}
+
+
 export const indent = (level = 0) => {
 	let spaces = "——";
 	for (var i = 0; i < level; ++i) {

@@ -4,14 +4,11 @@ export default (lines) => {
 	const returnLines = []
 
 	lines.forEach((line, i, arr) => {
-		const subset = getLinesWithSameStartingLocation(line.location, lines)
-		const info = getOverallInfoOfSubset(subset);
 
 		returnLines.push(...getOpeningBracketLines(
 			arr[i-1],
 			arr[i],
-			info
-
+			arr
 		))
 
 		returnLines.push(line)
@@ -19,7 +16,7 @@ export default (lines) => {
 		returnLines.push(...getClosingBracketLines(
 			arr[i],
 			arr[i+1],
-			info
+			arr
 		))
 	})
 
@@ -58,7 +55,7 @@ export const getOverallInfoOfSubset = (lines, finalInfo) => {
 export const getOpeningBracketLines = (
 	previousLine = { location: [] },
 	currentLine,
-	info
+	arr
 ) => {
 
 	const currentLineLoc = keepOnlyArrayAndObjects(currentLine.location);
@@ -70,7 +67,7 @@ export const getOpeningBracketLines = (
 	);
 
 	return [
-		...createLine(currentLineLoc, nestsToOpen, 'open', info)
+		...createLine(currentLineLoc, nestsToOpen, 'open', arr)
 	]
 
 };
@@ -78,8 +75,9 @@ export const getOpeningBracketLines = (
 export const getClosingBracketLines = (
 	currentLine,
 	nextLine = { location: []},
-	info
+	arr
 ) => {
+
 
 	const currentLineLoc = keepOnlyArrayAndObjects(currentLine.location);
 
@@ -90,13 +88,13 @@ export const getClosingBracketLines = (
 	);
 
 	return [
-		...createLine(currentLineLoc, nestsToClose, 'close', info).slice().reverse()
+		...createLine(currentLineLoc, nestsToClose, 'close', arr).slice().reverse()
 	]
 
 }
 
 function createLine(
-	fullLocationArr, nestsToOpen, closeOrOpen, info, returnLines = []
+	fullLocationArr, nestsToOpen, closeOrOpen, arr, returnLines = []
 ) {
 
 	nestsToOpen.forEach((item, i) => {
@@ -104,6 +102,10 @@ function createLine(
 		const keep = i + 1 + ( fullLocationArr.length - nestsToOpen.length)
 
 		const [thisPartial, thisType] = nestsToOpen[i];
+
+		const info = getOverallInfoOfSubset(
+			getLinesWithSameStartingLocation(fullLocationArr.slice(0, keep), arr)
+		)
 
 		returnLines.push({
 			location: fullLocationArr.slice(0, keep),

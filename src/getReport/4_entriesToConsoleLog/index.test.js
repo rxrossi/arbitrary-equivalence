@@ -10,25 +10,23 @@ describe('reportToConsoleLog (multiple lines)', () => {
 		const lines = [
 			{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
 				],
-				name: '',
 				value: '{',
 				info: infoCreators.missing()
 			},
 			{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
+					['name', 'string'],
 				],
-				name: 'name',
 				value: 'John',
 				info: infoCreators.missing()
 			},
 			{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
 				],
-				name: '',
 				value: '}',
 				info: infoCreators.missing()
 			}
@@ -39,7 +37,7 @@ describe('reportToConsoleLog (multiple lines)', () => {
 			+
 			indent(1).green
 			+
-			'name: John'.green;
+			'name: "John",'.green;
 
 		const expectedOpening =
 			' + '.inverse.green
@@ -75,9 +73,9 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a normal pair correctly', () => {
 			const line =	{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
+					['name', 'string'],
 				],
-				name: 'name',
 				value: 'John',
 				info: infoCreators.ok()
 			};
@@ -87,7 +85,7 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).dim
 				+
-				'name: John'.dim;
+				'name: "John",'.dim;
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -98,9 +96,9 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a missing pair correctly', () => {
 			const line =	{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
+					['name', 'string']
 				],
-				name: 'name',
 				value: 'John',
 				info: infoCreators.missing()
 			};
@@ -110,7 +108,7 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).green
 				+
-				'name: John'.green;
+				'name: "John",'.green;
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -121,9 +119,9 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a extraneous pair correctly', () => {
 			const line =	{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
+					['name', 'string'],
 				],
-				name: 'name',
 				value: 'John',
 				info: infoCreators.extraneous()
 			};
@@ -133,7 +131,7 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).red
 				+
-				'name: John'.red;
+				'name: "John",'.red;
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -144,9 +142,9 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a different pair correctly', () => {
 			const line =	{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
+					['name', 'string'],
 				],
-				name: 'name',
 				value: 'John',
 				info: infoCreators.different('Mary')
 			};
@@ -156,7 +154,7 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'name: John'.yellow
+				'name: "John"'.yellow
 				+
 				' '
 				+
@@ -164,7 +162,7 @@ describe('reportToConsoleLog single line', () => {
 				+
 				' '
 				+
-				'Mary'.yellow
+				'"Mary",'.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -172,13 +170,45 @@ describe('reportToConsoleLog single line', () => {
 			expect(answer).toEqual(expected);
 		})
 
+		it('prints a different pair correctly when the "received" value is a number', () => {
+			const line =	{
+				location: [
+					['', 'object'],
+					['age', 'number'],
+				],
+				value: 30,
+				info: infoCreators.different(31)
+			};
+
+			const expected =
+				' ! '.inverse.yellow
+				+
+				indent(1).yellow
+				+
+				'age: 30'.yellow
+				+
+				' '
+				+
+				'was expected, received'
+				+
+				' '
+				+
+				'31,'.yellow
+
+			// console.log(expected)
+			const answer = objLineToStr(line);
+			// console.log(answer);
+			expect(answer).toEqual(expected);
+
+		})
+
 		it('prints a pair that is inside a one level deep nest', () => {
 			const line = {
 				location: [
-					{partial: '', type: 'object'},
-					{partial: 'address', type: 'object'}
+					['', 'object'],
+					['address', 'object'],
+					['city', 'string'],
 				],
-				name: 'city',
 				value: 'NYC',
 				info: infoCreators.missing()
 			};
@@ -188,7 +218,7 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(2).green
 				+
-				'city: NYC'.green
+				'city: "NYC",'.green
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -199,11 +229,11 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a pair that is inside two level deep nest', () => {
 			const line = {
 				location: [
-					{partial: '', type: 'object'},
-					{partial: 'address', type: 'object'},
-					{partial: 'subAddress', type: 'object'}
+					['', 'object'],
+					['address', 'object'],
+					['subAddress', 'object'],
+					['subCity', 'string'],
 				],
-				name: 'subCity',
 				value: 'subCityVal',
 				info: infoCreators.different('NYC')
 			};
@@ -213,11 +243,11 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(3).yellow
 				+
-				'subCity: subCityVal'.yellow
+				'subCity: "subCityVal"'.yellow
 				+
 				' was expected, received '
 				+
-				'NYC'.yellow
+				'"NYC",'.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -228,9 +258,9 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a element on the root correctly', () => {
 			const line = {
 				location: [
-					{partial: '', type: 'array'}
+					['', 'array'],
+					['0', 'string']
 				],
-				name: '',
 				value: 'John',
 				info: infoCreators.different('Mary')
 			}
@@ -240,14 +270,16 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'John'.yellow
+				'0: '.dim.yellow
+				+
+				'"John"'.yellow
 				+
 				' was expected, received '
 				+
-				'Mary'.yellow
+				'"Mary",'.yellow
 
-			// console.log(expected)
 			const answer = objLineToStr(line);
+			// console.log(expected)
 			// console.log(answer);
 			expect(answer).toEqual(expected);
 
@@ -261,9 +293,8 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a opening bracket correctly', () => {
 			const line =	{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
 				],
-				name: '',
 				value: '{',
 				info: infoCreators.ok()
 			};
@@ -284,10 +315,9 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a opening object one level deep', () => {
 			const line = {
 				location: [
-					{partial: '', type: 'object'},
-					{partial: 'address', type: 'object'}
+					['', 'object'],
+					['address', 'object'],
 				],
-				name: 'address',
 				value: '{',
 				info: infoCreators.different()
 			};
@@ -308,10 +338,9 @@ describe('reportToConsoleLog single line', () => {
 		it('print a opening array two levels deep', () => {
 			const line = {
 				location: [
-					{partial: '', type: 'object'},
-					{partial: 'children', type: 'array'}
+					['', 'object'],
+					['children', 'array'],
 				],
-				name: 'children',
 				value: '[',
 				info: infoCreators.different()
 			};
@@ -332,8 +361,8 @@ describe('reportToConsoleLog single line', () => {
 		it('prints an array inside of an array', () => {
 			const line = {
 				location: [
-					{partial: '', type: 'array'},
-					{partial: '0', type: 'array'}
+					['', 'array'],
+					['0', 'array'],
 				],
 				name: '0',
 				value: '[',
@@ -347,6 +376,8 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
+				'0: '.dim.yellow
+				+
 				'['.yellow;
 
 			// console.log(expected);
@@ -359,9 +390,8 @@ describe('reportToConsoleLog single line', () => {
 		it('prints the closing line and root object', () => {
 			const line =	{
 				location: [
-					{partial: '', type: 'object'}
+					['', 'object'],
 				],
-				name: '',
 				value: '}',
 				info: infoCreators.ok()
 			};
@@ -382,10 +412,9 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a closing object one level deep', () => {
 			const line = {
 				location: [
-					{partial: '', type: 'object'},
-					{partial: 'address', type: 'object'}
+					['', 'object'],
+					['address', 'object'],
 				],
-				name: '',
 				value: '}',
 				info: infoCreators.different()
 			};
@@ -395,7 +424,7 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'}'.yellow
+				'},'.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -406,10 +435,9 @@ describe('reportToConsoleLog single line', () => {
 		it('prints a closing array one level deep', () => {
 			const line = {
 				location: [
-					{partial: '', type: 'object'},
-					{partial: 'children', type: 'array'}
+					['', 'object'],
+					['children', 'array'],
 				],
-				name: '',
 				value: ']',
 				info: infoCreators.different()
 			};
@@ -419,7 +447,7 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				']'.yellow
+				'],'.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
