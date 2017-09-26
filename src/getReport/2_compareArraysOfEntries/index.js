@@ -2,15 +2,19 @@ import * as infoCreators from '../infoCreators';
 
 export default (lData, rData) => {
 
+	let errorCount = 0;
+
 	const essential = lData.map((left) => {
 		const right = findBasedOnLocation(rData, left.location);
 		if (!right) {
+			errorCount += 1;
 			return Object.assign({}, left, { info: infoCreators.missing() })
 		}
 
 		if (left.value === right.value) {
 			return Object.assign({}, left, { info: infoCreators.ok() })
 		} else {
+			errorCount += 1;
 			return Object.assign({}, left, { info: infoCreators.different(right.value) });
 		}
 
@@ -22,9 +26,14 @@ export default (lData, rData) => {
 		return Object.assign({}, line, { info: infoCreators.extraneous() })
 	})
 
+	errorCount += extraneous.length;
+
 	const finalAnswer = joinArrays(essential, extraneous)
 
-	return finalAnswer;
+	return {
+		arr: finalAnswer,
+		errorCount
+	};
 }
 
 export const findBasedOnLocation = (arr, desiredLocation) => arr.find(({ location }) => areLocationsEqual(location, desiredLocation))

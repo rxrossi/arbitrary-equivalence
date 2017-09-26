@@ -38,7 +38,9 @@ describe('compareArrays of entries', () => {
 				}
 			];
 
-			const expected = [
+		const expectedErrorCount = 1;
+
+			const expectedArr = [
 				{
 					location: [
 						['', 'array'],
@@ -57,7 +59,10 @@ describe('compareArrays of entries', () => {
 				}
 			];
 
-		expect(compareArrays(lData, rData)).toEqual(expected);
+		const { errorCount, arr } = compareArrays(lData, rData);
+
+		expect(arr).toEqual(expectedArr);
+		expect(errorCount).toBe(1);
 	})
 
 	it('correctly returns the answer for lines that should receive DIFFERENT and MISSING', () => {
@@ -91,7 +96,7 @@ describe('compareArrays of entries', () => {
 			},
 		];
 
-		const expected = [
+		const expectedArr = [
 			{
 				location: [
 					['', 'object'],
@@ -112,8 +117,9 @@ describe('compareArrays of entries', () => {
 			}
 		];
 
-		const answer = compareArrays(lData, rData);
-		expect(answer).toEqual(expected);
+		const { errorCount, arr } = compareArrays(lData, rData);
+		expect(arr).toEqual(expectedArr);
+		expect(errorCount).toBe(2);
 	})
 
 	it('correctly returns the answer for lines that should receive OK and EXTRANEOUS', () => {
@@ -163,7 +169,7 @@ describe('compareArrays of entries', () => {
 			},
 		];
 
-		const expected = [
+		const expectedArr = [
 			{
 				location: [
 					['', 'object'],
@@ -193,8 +199,9 @@ describe('compareArrays of entries', () => {
 			},
 		];
 
-		const answer = compareArrays(lData, rData);
-		expect(answer).toEqual(expected);
+		const { errorCount, arr } = compareArrays(lData, rData);
+		expect(arr).toEqual(expectedArr);
+		expect(errorCount).toBe(1);
 	})
 
 	it('correctly returns the answer for lines that should receive OK and EXTRANEOUS in a more complex case', () => {
@@ -241,7 +248,7 @@ describe('compareArrays of entries', () => {
 			},
 		];
 
-		const expected = [
+		const expectedArr = [
 			{
 				location: [
 					['', 'object'],
@@ -269,11 +276,12 @@ describe('compareArrays of entries', () => {
 			},
 		];
 
-		const answer = compareArrays(lData, rData);
+		const { errorCount, arr } = compareArrays(lData, rData);
 		// console.slog(
 		// 	JSON.stringify(answer, null, 2)
 		// )
-		expect(answer).toEqual(expected);
+		expect(arr).toEqual(expectedArr);
+		expect(errorCount).toBe(1);
 	})
 })
 
