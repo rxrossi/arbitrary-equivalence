@@ -75,7 +75,7 @@ describe('getReport integration tests', () => {
 	})
 
 	describe('Simple arrays (no nests)', () => {
-		it('it works when everything is ok', () => {
+		it('works when everything is ok', () => {
 			const lArr = [
 				'John'
 			];
@@ -87,7 +87,7 @@ describe('getReport integration tests', () => {
 			console.log(answer)
 		})
 
-		it('it works when everything is ok', () => {
+		it('works when everything is ok', () => {
 			const lArr = [
 				'John',
 				'Mary'
@@ -99,9 +99,34 @@ describe('getReport integration tests', () => {
 			const answer = getReport(lArr, rArr)
 			console.log(answer)
 		})
+
+		it('works when comparing numbers (info is different)', () => {
+			const lArr = [
+				0,
+				'Mary'
+			];
+			const rArr = [
+				2,
+				'Mary'
+			];
+			const answer = getReport(lArr, rArr)
+			console.log(answer)
+		})
+
+		it('works when comparing numbers (info is missing and OK)', () => {
+			const lArr = [
+				1,
+				2,
+			];
+			const rArr = [
+				1,
+			];
+			const answer = getReport(lArr, rArr)
+			console.log(answer)
+		})
 	})
 
-	describe.only('Arrays with nest', () => {
+	describe('Arrays with nest', () => {
 		it('works when each element is an object', () => {
 			const lArr = [
 				{ name: 'John', surname: 'Doe'},

@@ -255,7 +255,7 @@ describe('reportToConsoleLog single line', () => {
 			expect(answer).toEqual(expected);
 		})
 
-		it('prints a element on the root correctly', () => {
+		it('prints a element on the root correctly (info.type is different)', () => {
 			const line = {
 				location: [
 					['', 'array'],
@@ -282,7 +282,31 @@ describe('reportToConsoleLog single line', () => {
 			// console.log(expected)
 			// console.log(answer);
 			expect(answer).toEqual(expected);
+		})
 
+		it('prints a element on the root correctly (info.type is ok)', () => {
+			const line = {
+				location: [
+					['', 'array'],
+					['0', 'string']
+				],
+				value: 'John',
+				info: infoCreators.ok()
+			}
+
+			const expected =
+				'   '.inverse.dim
+				+
+				indent(1).dim
+				+
+				'0: '.dim.dim
+				+
+				'"John",'.dim
+
+			const answer = objLineToStr(line);
+			// console.log(expected)
+			// console.log(answer);
+			expect(answer).toEqual(expected);
 		})
 
 
