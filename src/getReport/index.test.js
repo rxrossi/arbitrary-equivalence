@@ -1,6 +1,6 @@
 import getReport from './index';
 
-describe('getReport integration tests', () => {
+describe('getReport integration tests (Visual Only, does not have expects)', () => {
 	describe('Simple objects (no nest)', () => {
 		it('works when everything is ok', () => {
 			const lObj = {
@@ -10,9 +10,9 @@ describe('getReport integration tests', () => {
 				name: 'John',
 			};
 
-			const answer = getReport(lObj, rObj)
+			const { errorCount, str } = getReport(lObj, rObj)
 
-			console.log(answer)
+			console.log(str)
 		});
 
 		it('works when it has a extraneous', () => {
@@ -25,9 +25,9 @@ describe('getReport integration tests', () => {
 				surname: 'Doe'
 			};
 
-			const answer = getReport(lObj, rObj);
+			const { errorCount, str } = getReport(lObj, rObj);
 
-			console.log(answer);
+			console.log(str);
 		});
 
 		it('works when has a missing pair', () => {
@@ -38,9 +38,9 @@ describe('getReport integration tests', () => {
 			const rObj = {
 			};
 
-			const answer = getReport(lObj, rObj);
+			const { errorCount, str } = getReport(lObj, rObj);
 
-			console.log(answer);
+			console.log(str);
 		});
 
 		it('works when a pair is different', () => {
@@ -54,9 +54,9 @@ describe('getReport integration tests', () => {
 				name: 'John',
 			};
 
-			const answer = getReport(lObj, rObj);
+			const { errorCount, str } = getReport(lObj, rObj);
 
-			console.log(answer);
+			console.log(str);
 		});
 
 		it('works when a pair is different', () => {
@@ -68,9 +68,9 @@ describe('getReport integration tests', () => {
 				name: 'Mary',
 			};
 
-			const answer = getReport(lObj, rObj);
+			const { errorCount, str } = getReport(lObj, rObj);
 
-			console.log(answer);
+			console.log(str);
 		});
 	})
 
@@ -82,9 +82,9 @@ describe('getReport integration tests', () => {
 			const rArr = [
 				'John'
 			];
-			const answer = getReport(lArr, rArr);
+			const { errorCount, str } = getReport(lArr, rArr);
 
-			console.log(answer)
+			console.log(str)
 		})
 
 		it('works when everything is ok', () => {
@@ -96,8 +96,8 @@ describe('getReport integration tests', () => {
 				'John',
 				'Mary'
 			];
-			const answer = getReport(lArr, rArr)
-			console.log(answer)
+			const { errorCount, str } = getReport(lArr, rArr);
+			console.log(str)
 		})
 
 		it('works when comparing numbers (info is different)', () => {
@@ -109,8 +109,9 @@ describe('getReport integration tests', () => {
 				2,
 				'Mary'
 			];
-			const answer = getReport(lArr, rArr)
-			console.log(answer)
+
+			const { errorCount, str } = getReport(lArr, rArr);
+			console.log(str)
 		})
 
 		it('works when comparing numbers (info is missing and OK)', () => {
@@ -121,8 +122,8 @@ describe('getReport integration tests', () => {
 			const rArr = [
 				1,
 			];
-			const answer = getReport(lArr, rArr)
-			console.log(answer)
+			const { errorCount, str } = getReport(lArr, rArr);
+			console.log(str)
 		})
 	})
 
@@ -138,8 +139,8 @@ describe('getReport integration tests', () => {
 				{ name: 'Mary', surname: 'Doe'}
 			];
 
-			const answer = getReport(lArr, rArr);
-			console.log(answer);
+			const { errorCount, str } = getReport(lArr, rArr);
+			console.log(str)
 		})
 
 		it('works when each element is an array', () => {
@@ -153,8 +154,8 @@ describe('getReport integration tests', () => {
 				['kj', 'joana'],
 			];
 
-			const answer = getReport(lArr, rArr);
-			console.log(answer);
+			const { errorCount, str } = getReport(lArr, rArr);
+			console.log(str)
 		})
 	});
 
