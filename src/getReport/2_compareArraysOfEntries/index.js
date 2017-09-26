@@ -1,6 +1,6 @@
 import * as infoCreators from '../infoCreators';
 
-export default (lData, rData) => {
+export default (lData, rData, comparisonFn = defaultComparisonFunction) => {
 
 	let errorCount = 0;
 
@@ -11,7 +11,7 @@ export default (lData, rData) => {
 			return Object.assign({}, left, { info: infoCreators.missing() })
 		}
 
-		if (left.value === right.value) {
+		if (comparisonFn(left.value, right.value)) {
 			return Object.assign({}, left, { info: infoCreators.ok() })
 		} else {
 			errorCount += 1;
@@ -35,6 +35,8 @@ export default (lData, rData) => {
 		errorCount
 	};
 }
+
+const defaultComparisonFunction = (lVal, rVal) => lVal === rVal
 
 export const findBasedOnLocation = (arr, desiredLocation) => arr.find(({ location }) => areLocationsEqual(location, desiredLocation))
 
