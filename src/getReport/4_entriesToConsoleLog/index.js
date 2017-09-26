@@ -32,7 +32,7 @@ function getEnd({value, info, location}) {
 
 	let str = colorize(`${name}: ${printValue}${comma}`, info);
 
-	if (isElement(location)) {
+	if (isElement(location) && !isRoot(location)) {
 		str = colorize(`${name}: `.dim, info)+colorize(`${printValue}`, info);
 	} else if (isRoot(location) || isClosingBracket(value)) {
 		str = colorize(`${printValue}${comma}`, info);

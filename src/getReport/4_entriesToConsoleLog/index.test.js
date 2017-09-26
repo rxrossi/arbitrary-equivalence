@@ -290,7 +290,7 @@ describe('reportToConsoleLog single line', () => {
 
 	describe('Opening brackets', () => {
 
-		it('prints a opening bracket correctly', () => {
+		it('prints a opening bracket correctly on an object', () => {
 			const line =	{
 				location: [
 					['', 'object'],
@@ -305,6 +305,28 @@ describe('reportToConsoleLog single line', () => {
 				indent().dim
 				+
 				'{'.dim;
+
+			// console.log(expected)
+			const answer = objLineToStr(line);
+			// console.log(answer);
+			expect(answer).toEqual(expected);
+		})
+
+		it('prints a opening bracket correctly on an array', () => {
+			const line =	{
+				location: [
+					['', 'array'],
+				],
+				value: '[',
+				info: infoCreators.ok()
+			};
+
+			const expected =
+				'   '.inverse.dim
+				+
+				indent().dim
+				+
+				'['.dim;
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -402,6 +424,28 @@ describe('reportToConsoleLog single line', () => {
 				indent().dim
 				+
 				'}'.dim;
+
+			// console.log(expected)
+			const answer = objLineToStr(line);
+			// console.log(answer);
+			expect(answer).toEqual(expected);
+		})
+
+		it('prints a opening bracket correctly on an array', () => {
+			const line =	{
+				location: [
+					['', 'array'],
+				],
+				value: ']',
+				info: infoCreators.ok()
+			};
+
+			const expected =
+				'   '.inverse.dim
+				+
+				indent().dim
+				+
+				']'.dim;
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
