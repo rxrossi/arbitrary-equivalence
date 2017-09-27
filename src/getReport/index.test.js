@@ -1,6 +1,6 @@
 import getReport from './index';
 
-describe.skip('getReport integration tests (Visual Only, does not have expects)', () => {
+describe('getReport integration tests (Visual Only, does not have expects)', () => {
 	describe('Simple objects (no nest)', () => {
 		it('works when everything is ok', () => {
 			const lObj = {

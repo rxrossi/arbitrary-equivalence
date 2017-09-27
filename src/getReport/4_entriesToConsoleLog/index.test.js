@@ -37,7 +37,11 @@ describe('reportToConsoleLog (multiple lines)', () => {
 			+
 			indent(1).green
 			+
-			'name: "John",'.green;
+			'name: '.green
+			+
+			'"John"'.green
+			+
+			','.green;
 
 		const expectedOpening =
 			' + '.inverse.green
@@ -85,7 +89,11 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).dim
 				+
-				'name: "John",'.dim;
+				'name: '.dim
+				+
+				'"John"'.dim
+				+
+				','.dim
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -108,7 +116,11 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).green
 				+
-				'name: "John",'.green;
+				'name: '.green
+				+
+				'"John"'.green
+				+
+				','.green;
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -131,7 +143,11 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).red
 				+
-				'name: "John",'.red;
+				'name: '.red
+				+
+				'"John"'.red
+				+
+				','.red
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -154,15 +170,15 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'name: "John"'.yellow
+				'name: '.yellow
 				+
-				' '
+				'"John"'.yellow
 				+
-				'was expected, received'
+				' was expected, received '
 				+
-				' '
+				'"Mary"'.yellow
 				+
-				'"Mary",'.yellow
+				','.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -185,15 +201,15 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'age: 30'.yellow
+				'age: '.yellow
 				+
-				' '
+				'30'.yellow
 				+
-				'was expected, received'
+				' was expected, received '
 				+
-				' '
+				'31'.yellow
 				+
-				'31,'.yellow
+				','.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -218,7 +234,11 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(2).green
 				+
-				'city: "NYC",'.green
+				'city: '.green
+				+
+				'"NYC"'.green
+				+
+				','.green
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -243,12 +263,15 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(3).yellow
 				+
-				'subCity: "subCityVal"'.yellow
+				'subCity: '.yellow
+				+
+				'"subCityVal"'.yellow
 				+
 				' was expected, received '
 				+
-				'"NYC",'.yellow
-
+				'"NYC"'.yellow
+				+
+				','.yellow
 			// console.log(expected)
 			const answer = objLineToStr(line);
 			// console.log(answer);
@@ -276,7 +299,9 @@ describe('reportToConsoleLog single line', () => {
 				+
 				' was expected, received '
 				+
-				'"Mary",'.yellow
+				'"Mary"'.yellow
+				+
+				','.yellow
 
 			const answer = objLineToStr(line);
 			// console.log(expected)
@@ -301,7 +326,9 @@ describe('reportToConsoleLog single line', () => {
 				+
 				'0: '.dim.dim
 				+
-				'"John",'.dim
+				'"John"'.dim
+				+
+				','.dim
 
 			const answer = objLineToStr(line);
 			// console.log(expected)
@@ -328,11 +355,11 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent().dim
 				+
-				'{'.dim;
+				'{'.dim
 
-			// console.log(expected)
+			// console.log(expected.length)
 			const answer = objLineToStr(line);
-			// console.log(answer);
+			// console.log(answer.length);
 			expect(answer).toEqual(expected);
 		})
 
@@ -373,7 +400,9 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'address: {'.yellow
+				'address: '.yellow
+				+
+				'{'.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -396,7 +425,9 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'children: ['.yellow
+				'children: '.yellow
+				+
+				'['.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -492,7 +523,9 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'},'.yellow
+				'}'.yellow
+				+
+				','.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);
@@ -515,7 +548,9 @@ describe('reportToConsoleLog single line', () => {
 				+
 				indent(1).yellow
 				+
-				'],'.yellow
+				']'.yellow
+				+
+				','.yellow
 
 			// console.log(expected)
 			const answer = objLineToStr(line);

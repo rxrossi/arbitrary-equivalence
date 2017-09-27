@@ -24,11 +24,9 @@ return true for equal, false for not equal
 # preProcessLeft & preProcessRight
 Will be passed to getArrayOfEntries
 
-
 An example considering likeArrays would be
 compareLineByLine will compare the same lPath to the rParh 
-In case I decide to use a class, I would return the line and its last location part would instead of string or number, be a class, for this I would need to work on preProcessLeft and getArrayOfEntries, the solution would be to modify function createLocation inside getArrayOfEntries, but I gotta think if this is really necessary
-Contrary to the previous paragraph, it would probably correctly identify as class or I would need to modify getType inside getArrayOfEntries
+It would probably correctly identify as class or I would need to modify getType inside getArrayOfEntries
 on postProcess I could change it to print the way I want it
 
 Think about how I should print a line which last location is like ['sons', 'class'], and value is an instance of likeArray.receved(), indicating that this is actually different
@@ -41,4 +39,22 @@ Shorter versions
 Expected array with: (<, >, <=, >=, =) 3 items, following pattern ${pattern}
 Received typeof with ${x} items, (patterns match, the first to not match is on index ${index} and its pattern is ${pattern})
 
+Write a intermediary, expect that the function returns something like: 
+[
+	['"John"', 'strong'],
+	['was expected but received', 'regular'],
+	['"Mary"', 'strong'],
+]
+
+Or [
+	['Array with'],
+	['items >= 3'],
+	['pattern: pattern'],
+	['was expected, but'],
+	['Array has 2 items'],
+	['and the pattern at index 0 is different'],
+	['JSON.stringify the line'],
+]
+
+to be added after symbol and indentation (something like this: + ----)
 # Notes

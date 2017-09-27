@@ -11,7 +11,6 @@ export default (lines) => {
 	return str;
 }
 
-
 export const objLineToStr = (line) => {
 
 	let str = getStart(line);
@@ -22,31 +21,50 @@ export const objLineToStr = (line) => {
 
 };
 
-function getEnd({value, info, location}) {
+function getEnd({value, info, location}, postProcessVal = defaultPosProcessVal) {
 
 	const [ name, type ] = location[location.length-1];
 
-	const printValue = type === 'string' ? `"${value}"` : value;
+	const { printValue, printReceived } = postProcessVal(value, type, info);
 
-	const comma = info.received || isOpeningBracket(value) || isRoot(location) ? '' : ','
+	let str = colorize(`${name}: `, info);//don't dim name
 
-	let str = colorize(`${name}: ${printValue}${comma}`, info);
-
-	if (isElement(location) && !isRoot(location)) {
-		str = colorize(`${name}: `.dim, info)+colorize(`${printValue}${comma}`, info);
-	} else if (isRoot(location) || isClosingBracket(value)) {
-		str = colorize(`${printValue}${comma}`, info);
+	if (isElement(location) && !isRoot(location)) { //dim name
+		str = colorize(`${name}: `.dim, info);
+	} else if (isRoot(location) || isClosingBracket(value)) {//don't add name
+		str = '';
 	}
 
+
+	if (printValue) {
+		str += colorize(printValue, info);
+	}
 
 	if (info.received) {
-		const received = typeof info.received === 'string' ? `"${info.received}"` : info.received;
 		str += ' was expected, received '
-		str += colorize(`${received},`, info);
+		str += colorize(`${printReceived}`, info);
 	}
 
+	const comma = isOpeningBracket(value) || isRoot(location) ? '' : ',';
+	if (comma) {
+		str += colorize(comma, info); //add comma if necessary
+	}
 	return str
 };
+
+function defaultPosProcessVal(value, type, info) {
+	const printValue = type === 'string' ? `"${value}"` : `${value}`;
+	let printReceived = '';
+
+	if (info.received) {
+		printReceived = typeof info.received === 'string' ? `"${info.received}"` : info.received;
+	}
+
+	return {
+		printValue,
+		printReceived
+	}
+}
 
 function isElement(location) {
 	const index = location.length-2 > 0 ? location.length-2 : 0;
@@ -72,15 +90,8 @@ function getStart ({info}) {
 };
 
 function getIndent(line) {
-	let str;
-	// if (isBracket(line.value)) {
-	// 	str = indent(line.location.length -1)
-	// } else {
-		str = indent(line.location.length-1);
-	// }
-
+	const str = indent(line.location.length-1);
 	return colorize(str, line.info);
-
 };
 
 function isBracket(value) {
@@ -92,12 +103,12 @@ function isBracket(value) {
 
 function isOpeningBracket(value) {
 	return value === '[' ||
-	value === '{'
+		value === '{'
 }
 
 function isClosingBracket(value) {
 	return value === ']' ||
-	value === '}'
+		value === '}'
 }
 
 
