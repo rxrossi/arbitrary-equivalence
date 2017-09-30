@@ -18,6 +18,7 @@ export const objLineToStr = (line) => {
 	str += getEnd(line) //pair, element, opening/closing bracket
 
 	return str;
+	//TODO: add a processValueToPrint to getEnd and a sort of this to postAdditionOfValueToString
 
 };
 
