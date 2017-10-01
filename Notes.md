@@ -1,30 +1,13 @@
 # TODO
 
-- Work on a function that will detect when brackets are different
-
 - comparing using matchers
 -- using like matchers
 -- apply recursion to user eachLike 
 
 - Work on visual representation when
--- comparing objects to arrays
 -- comparing strings and this will probably fit an eachLike as root
 - perform a test to receive real inputs and check correct output
 
-- Still not arbitrary equivalence, it can just show regular equivalence, think about tests before implementing, it might be too painful to test directly the string to log (final result)
-
-- I need to use preProcessLeft to work on like objects?
-	I will need to correctly print to console log
-
-- Work on how to use class as value, how to compare and then how to print it
--- how to use:
-The value will be passed normally, as string or number
--- how to compare
-The comparison function should be able to handle that this is a class and not a regular string or value
-Would be clever to modify location, there is a getType function on getArrayOfEntries for this, used on createLocation
-I could create a method on the class that returns true or false, meaning equal or not, such method would receive R value
--- how to print
-I should get a function to see when location is a class, or the value type itself is a class (using instanceof maybe?) then modify the printValue and printReceived (check on entriesToConsoleLog)
 
 The index function will receive:
 
