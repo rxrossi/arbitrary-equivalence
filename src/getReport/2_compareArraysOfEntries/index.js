@@ -4,6 +4,8 @@ export default (lData, rData, comparisonFn = defaultComparisonFunction) => {
 
 	let errorCount = 0;
 
+	// console.log(lData[1])
+
 	const essential = lData.map((left) => {
 		const right = findBasedOnLocation(rData, left.location);
 		if (!right) {
@@ -44,7 +46,7 @@ export const areLocationsEqual = (left, right) => {
 	if (left.length !== right.length) {
 		return false;
 	}
-	return left.every(([lPartial, lType]) => right.find(([rPartial, rType]) => lPartial === rPartial && lType === rType))
+	return left.every(([lPartial, lType]) => right.find(([rPartial, rType]) => lPartial === rPartial))
 };
 
 export const joinArrays = (left, right) => {

@@ -1,4 +1,6 @@
-function getStructure (structure, arr = [], currentLocation) {
+function getStructure (structure, preProcessLeft = x => x, arr = [], currentLocation) {
+
+	structure = preProcessLeft(structure)
 
 	if (!currentLocation) {
 		currentLocation = [
@@ -7,14 +9,23 @@ function getStructure (structure, arr = [], currentLocation) {
 	}
 
 	Object.entries(structure).forEach(([name, value]) => {
-		if (typeof value === 'object') {
-			return getStructure(value, arr, [...currentLocation, createLocation(name, value)])
+
+		if (getType(value) === 'object' || getType(value) === 'array') {
+			return getStructure(
+				value,
+				preProcessLeft,
+				arr,
+				[...currentLocation, createLocation(name, value)]
+			)
 		}
 		arr.push(createLine(name, value, structure, currentLocation))
 	})
 
 	return arr;
 }
+
+export default getStructure;
+
 
 function createLine (name, value, structure, location) {
 	location = [...location, createLocation(name, value)]
@@ -24,7 +35,6 @@ function createLine (name, value, structure, location) {
 	}
 }
 
-export default getStructure;
 
 function createLocation(location, structure) {
 	// console.log(location, structure)
@@ -53,5 +63,13 @@ function getType (value) {
 	if (Array.isArray(value)) {
 		return 'array';
 	}
+
+	if (
+		(typeof value).toLowerCase() !==
+		(value.constructor.name).toLowerCase()
+	) {
+		return value.constructor.name;
+	}
+
 	return typeof value;
 }

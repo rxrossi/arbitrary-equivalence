@@ -1,4 +1,11 @@
 # TODO
+
+- Work on a function that will detect when brackets are different
+
+- comparing using matchers
+-- using like matchers
+-- apply recursion to user eachLike 
+
 - Work on visual representation when
 -- comparing objects to arrays
 -- comparing strings and this will probably fit an eachLike as root
@@ -26,6 +33,7 @@ rData,
 compareLineByLine *
 {preProcessLeft, preProcessRight} *
 postProcess *
+appendToIndividualLines
 
 (*) means optional
 lData and rData can be array, string, number or objects

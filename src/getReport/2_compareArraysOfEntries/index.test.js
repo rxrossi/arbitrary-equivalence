@@ -385,9 +385,35 @@ describe('Not using custom comparison function', () => {
 
 			expect(findBasedOnLocation(rData, location)).toEqual(rData[1]);
 		});
+
+		it('works if last location type is different', () => {
+			const	location = [
+				['', 'object'],
+				['surname', 'number']
+			];
+
+			const rData = [
+				{
+					location: [
+						['', 'object'],
+						['name', 'string']
+					],
+					value: 'Mary',
+				},
+				{
+					location: [
+						['', 'object'],
+						['surname', 'string']
+					],
+					value: 'surname',
+				}
+			];
+
+			expect(findBasedOnLocation(rData, location)).toEqual(rData[1]);
+		})
 	})
 
-	describe('areLocationsEqual', () => {
+	describe('areLocationsEqual (does not consider path type, only path)', () => {
 		it('works for a true case', () => {
 			const left = [
 				['', 'object']
@@ -400,16 +426,16 @@ describe('Not using custom comparison function', () => {
 			expect(areLocationsEqual(left, right)).toBe(true);
 		})
 
-		it('works for a false case', () => {
+		it('works for a true case when type if different', () => {
 			const left = [
-				['', 'array']
+				['', '']
 			];
 
 			const right = [
 				['', 'object']
 			];
 
-			expect(areLocationsEqual(left, right)).toBe(false);
+			expect(areLocationsEqual(left, right)).toBe(true);
 		})
 
 		it('works for a false case, where right side contains left', () => {
