@@ -4,8 +4,6 @@ import * as infoCreators from '../infoCreators';
 import linesArrToStr, { indent, objLineToStr } from './index';
 
 describe('reportToConsoleLog (multiple lines)', () => {
-	//get a multiple line report to try
-	//at first try to just console.log it, don't write a test
 	it('a single pair object', () => {
 		const lines = [
 			{

@@ -1,7 +1,13 @@
 # TODO
+- Work on visual representation when
+-- comparing objects to arrays
+-- comparing strings and this will probably fit an eachLike as root
 - perform a test to receive real inputs and check correct output
 
 - Still not arbitrary equivalence, it can just show regular equivalence, think about tests before implementing, it might be too painful to test directly the string to log (final result)
+
+- I need to use preProcessLeft to work on like objects?
+	I will need to correctly print to console log
 
 - Work on how to use class as value, how to compare and then how to print it
 -- how to use:

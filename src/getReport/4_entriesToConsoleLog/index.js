@@ -1,28 +1,32 @@
 import * as infoCreators from '../infoCreators';
 import colors from 'colors';
 
-export default (lines) => {
+export default (lines, postProcessVal = defaultPostProcessVal, appendToStr = defaultAppendToStr) => {
 	let str='';
 
 	lines.forEach(line => {
-		str += objLineToStr(line)+'\n';
+		str += objLineToStr(line, postProcessVal, appendToStr)+'\n';
 	})
 
 	return str;
 }
 
-export const objLineToStr = (line) => {
+export const objLineToStr = (line, postProcessVal = defaultPostProcessVal, appendToStr = defaultAppendToStr) => {
 
 	let str = getStart(line);
 	str += getIndent(line)
-	str += getEnd(line) //pair, element, opening/closing bracket
-
+	str += getEnd(line, postProcessVal) //pair, element, opening/closing bracket
+	str += appendToStr(line)
 	return str;
 	//TODO: add a processValueToPrint to getEnd and a sort of this to postAdditionOfValueToString
 
 };
 
-function getEnd({value, info, location}, postProcessVal = defaultPosProcessVal) {
+function defaultAppendToStr(line) {
+	return ''
+}
+
+function getEnd({value, info, location}, postProcessVal) {
 
 	const [ name, type ] = location[location.length-1];
 
@@ -53,7 +57,7 @@ function getEnd({value, info, location}, postProcessVal = defaultPosProcessVal) 
 	return str
 };
 
-function defaultPosProcessVal(value, type, info) {
+function defaultPostProcessVal(value, type, info) {
 	const printValue = type === 'string' ? `"${value}"` : `${value}`;
 	let printReceived = '';
 

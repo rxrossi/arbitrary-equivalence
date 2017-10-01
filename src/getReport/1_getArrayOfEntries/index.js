@@ -8,7 +8,6 @@ function getStructure (structure, arr = [], currentLocation) {
 
 	Object.entries(structure).forEach(([name, value]) => {
 		if (typeof value === 'object') {
-			// console.log(value)
 			return getStructure(value, arr, [...currentLocation, createLocation(name, value)])
 		}
 		arr.push(createLine(name, value, structure, currentLocation))
