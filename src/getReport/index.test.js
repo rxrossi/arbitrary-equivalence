@@ -1,7 +1,6 @@
 import getReport from './index';
-import like, { isInstanceOfLike } from './matchers/like/index';
 
-describe('getReport integration tests (Visual Only, does not have expects)', () => {
+describe.skip('getReport integration tests (Visual Only, does not have expects)', () => {
 	describe('Simple objects (no nest)', () => {
 		it('works when everything is ok', () => {
 			const lObj = {
@@ -159,49 +158,13 @@ describe('getReport integration tests (Visual Only, does not have expects)', () 
 			console.log(str)
 		})
 	});
-});
 
-describe('getReport integration tests using matchers (like only)', () => {
-	it('works for a simple case', () => {
-		const lData = like({
-			name: 'John',
-			surname: 'Doe',
-		});
-
+	it('compare array to object', () => {
+		const lData = [ 'one', 'two'];
 		const rData = {
-			name: 'Mary',
-			surname: 2,
-			city: 'London',
-		};
-
-		const preProcessL =  val => val.toSimpler();
-
-
-		const compareLineByLineFn = (lVal, rVal) => {
-			return lVal.compare(rVal)
-		};
-
-		function postProcess(value, type, info) {
-			if (isInstanceOfLike(value)) {
-				value = value.toDisplay()
-			}
-			// value = value.toDisplay() ? value.toDisplay() : value;
-			const printValue = type === 'string' ? `"${value}"` : `${value}`;
-			let printReceived = '';
-
-			if (info.received) {
-				printReceived = typeof info.received === 'string' ? `"${info.received}"` : info.received;
-			}
-
-			return {
-				printValue,
-				printReceived
-			}
+			name: 'John'
 		}
-
-		const answer = getReport(lData, rData, compareLineByLineFn, preProcessL, postProcess);
-
-		console.log(answer.str)
-
+		const { errorCount, str } = getReport(lData, rData);
+		console.log(str)
 	})
-})
+});
