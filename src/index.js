@@ -1,5 +1,5 @@
-import getReport from './getReport';
-import { isInstanceOfLike } from './matchers/like';
+import getReport from './getReportWithLikeMatcherSupport';
+import { isInstanceOfLike } from './getReportWithLikeMatcherSupport/likeMatcher';
 
 export default (lData, rData) => {
 	const preProcessL =  val => val.toSimpler();
