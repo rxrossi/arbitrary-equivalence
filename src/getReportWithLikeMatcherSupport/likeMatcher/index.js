@@ -24,7 +24,7 @@ class cLike {
 			return this
 		}
 
-		return getStructure(startVal)
+		return getStructure(this.value)
 
 		function getStructure (structure, prevLoc = []) {
 
