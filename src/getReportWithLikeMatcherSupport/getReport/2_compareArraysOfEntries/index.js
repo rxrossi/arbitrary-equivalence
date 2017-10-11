@@ -1,28 +1,42 @@
 import * as infoCreators from '../infoCreators';
+import getArrayOfEntries from '../1_getArrayOfEntries';
 
-export default (lData, rData, comparisonFn = defaultComparisonFunction) => {
+export default (lData, rData, preProcessLeft, comparisonFn = defaultComparisonFunction) => {
+	// no need for duplicated args, I could call 1_getArraysOfEntries directly from here
+
+	let lArrOfLines = getArrayOfEntries(lData, preProcessLeft);
+	let rArrOfLines = getArrayOfEntries(rData);
 
 	let errorCount = 0;
 
-	// console.log(lData[1])
-
-	const essential = lData.map((left) => {
+	const essential = lArrOfLines.map((left) => { //I'm thinking about extracting this
 		const right = findBasedOnLocation(rData, left.location);
+		const { ok, printableValue, printableReceived, appendStr } = comparisonFn(left.value, right)
 		if (!right) {
 			errorCount += 1;
-			return Object.assign({}, left, { info: infoCreators.missing() })
+			return Object.assign({}, left,
+				{ info: infoCreators.missing() },
+				{ printableValue, printableReceived, appendStr }
+			)
 		}
 
-		if (comparisonFn(left.value, right.value)) {
-			return Object.assign({}, left, { info: infoCreators.ok() })
+
+		if (ok) {
+			return Object.assign({}, left,
+				{ info: infoCreators.ok() },
+				{ printableValue, printableReceived, appendStr }
+			)
 		} else {
 			errorCount += 1;
-			return Object.assign({}, left, { info: infoCreators.different(right.value) });
+			return Object.assign({}, left,
+				{ info: infoCreators.different(right) },
+				{ printableValue, printableReceived, appendStr }
+			);
 		}
 
 	})
 
-	const extraneous = rData.filter(right => {
+	const extraneous = rArrOfLines.filter(right => { //I'm thinking about extracting this one
 		return !findBasedOnLocation(lData, right.location);
 	}).map((line) => {
 		return Object.assign({}, line, { info: infoCreators.extraneous() })
@@ -38,9 +52,26 @@ export default (lData, rData, comparisonFn = defaultComparisonFunction) => {
 	};
 }
 
-const defaultComparisonFunction = (lVal, rVal) => lVal === rVal
+const defaultComparisonFunction = (lVal, rVal) => {
+	return {
+		ok: lVal === rVal,
+		printableValue: lVal,
+		printableReceived: rVal,
+		appendStr: undefined
+	}
+}
 
-export const findBasedOnLocation = (arr, desiredLocation) => arr.find(({ location }) => areLocationsEqual(location, desiredLocation))
+export function findBasedOnLocation (dataStructure, location) {
+	const relevantPartOfLocation = location.map(loc => loc[0]).slice(1);
+	return deepFind (dataStructure, relevantPartOfLocation)
+}
+
+function deepFind (obj, path) {
+    for (var i=0, len=path.length; i<len; i++){
+        obj = obj[path[i]];
+    };
+    return obj;
+};
 
 export const areLocationsEqual = (left, right) => {
 	if (left.length !== right.length) {

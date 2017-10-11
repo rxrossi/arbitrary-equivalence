@@ -6,37 +6,13 @@ describe('Not using custom comparison function', () => {
 			it('correctly returns the answer for lines that should receive OK and DIFFERENT', () => {
 
 				const lData = [
-					{
-						location: [
-							['', 'array'],
-							['0', 'string'],
-						],
-						value: 'John',
-					},
-					{
-						location: [
-							['', 'array'],
-							['1', 'string'],
-						],
-						value: 'Mary',
-					}
+					"John",
+					"Mary",
 				];
 
 				const rData = [
-					{
-						location: [
-							['', 'array'],
-							['0', 'string'],
-						],
-						value: 'John',
-					},
-					{
-						location: [
-							['', 'array'],
-							['1', 'string'],
-						],
-						value: 'Joana',
-					}
+					"John",
+					"Joana",
 				];
 
 				const expectedErrorCount = 1;
@@ -48,6 +24,9 @@ describe('Not using custom comparison function', () => {
 							['0', 'string'],
 						],
 						value: 'John',
+						printableValue: 'John',
+						printableReceived: 'John',
+						appendStr: undefined,
 						info: infoCreators.ok()
 					},
 					{
@@ -56,46 +35,36 @@ describe('Not using custom comparison function', () => {
 							['1', 'string'],
 						],
 						value: 'Mary',
+						printableValue: 'Mary',
+						printableReceived: 'Joana',
+						appendStr: undefined,
 						info: infoCreators.different('Joana')
 					}
 				];
 
 				const { errorCount, arr } = compareArrays(lData, rData);
+				// console.log(
+				// 	JSON.stringify(arr, null, 2)
+				// )
 
 				expect(arr).toEqual(expectedArr);
 				expect(errorCount).toBe(1);
 			})
 
 			it('correctly returns the answer for lines that should receive DIFFERENT and MISSING', () => {
-				const lData = [
-					{
-						location: [
-							['', 'object'],
-							['address', 'object'],
-							['city', 'string'],
-						],
-						value: 'Piracicaba',
-					},
-					{
-						location: [
-							['', 'object'],
-							['address', 'object'],
-							['state', 'string'],
-						],
-						value: 'São Paulo',
-					}
-				];
 
-				const rData = [
-					{
-						location: [
-							['', 'object'],
-							['address', 'object'],
-							['city', 'string'],
-						],
-						value: 'Campinas',
-					},
-				];
+				const lData = {
+					address: {
+						city: 'Piracicaba',
+						state: 'São Paulo'
+					}
+				};
+
+				const rData = {
+					address: {
+						city: 'Campinas'
+					}
+				}
 
 				const expectedArr = [
 					{
@@ -105,6 +74,9 @@ describe('Not using custom comparison function', () => {
 							['city', 'string'],
 						],
 						value: 'Piracicaba',
+						printableValue: 'Piracicaba',
+						printableReceived: 'Campinas',
+						appendStr: undefined,
 						info: infoCreators.different('Campinas')
 					},
 					{
@@ -114,61 +86,37 @@ describe('Not using custom comparison function', () => {
 							['state', 'string'],
 						],
 						value: 'São Paulo',
+						printableValue: 'São Paulo',
+						printableReceived: undefined,
+						appendStr: undefined,
 						info: infoCreators.missing()
 					}
 				];
 
 				const { errorCount, arr } = compareArrays(lData, rData);
+				// console.log(
+				// 	JSON.stringify(arr, null, 2)
+				// )
 				expect(arr).toEqual(expectedArr);
 				expect(errorCount).toBe(2);
 			})
 
-			it('correctly returns the answer for lines that should receive OK and EXTRANEOUS', () => {
-				const lData = [
-					{
-						location: [
-							['', 'object'],
-							['sons', 'array'],
-							['0', 'string'],
-						],
-						value: 'Carl',
-					},
-					{
-						location: [
-							['', 'object'],
-							['sons', 'array'],
-							['1', 'string'],
-						],
-						value: 'Lucy',
-					},
-				];
+			it.only('correctly returns the answer for lines that should receive OK and EXTRANEOUS', () => {
 
-				const rData = [
-					{
-						location: [
-							['', 'object'],
-							['sons', 'array'],
-							['0', 'string'],
-						],
-						value: 'Carl',
-					},
-					{
-						location: [
-							['', 'object'],
-							['sons', 'array'],
-							['1', 'string'],
-						],
-						value: 'Lucy',
-					},
-					{
-						location: [
-							['', 'object'],
-							['sons', 'array'],
-							['2', 'string'],
-						],
-						value: 'Mary',
-					},
-				];
+				const lData = {
+					sons: [
+						"Carl",
+						"Lucy"
+					]
+				};
+
+				const rData = {
+					sons: [
+						"Carl",
+						"Lucy",
+						"Mary"
+					]
+				}
 
 				const expectedArr = [
 					{
@@ -206,48 +154,21 @@ describe('Not using custom comparison function', () => {
 			})
 
 			it('correctly returns the answer for lines that should receive OK and EXTRANEOUS in a more complex case', () => {
-				const lData = [
-					{
-						location: [
-							['', 'object'],
-							['name', 'string'],
-						],
-						value: 'Carl',
-					},
-					{
-						location: [
-							['', 'object'],
-							['address', 'object'],
-							['city', 'string']
-						],
-						value: 'New York',
-					},
-				];
 
-				const rData = [
-					{
-						location: [
-							['', 'object'],
-							['name', 'string'],
-						],
-						value: 'Carl',
-					},
-					{
-						location: [
-							['', 'object'],
-							['surname', 'string'],
-						],
-						value: 'Doe',
-					},
-					{
-						location: [
-							['', 'object'],
-							['address', 'object'],
-							['city', 'string']
-						],
-						value: 'New York',
-					},
-				];
+				const lData = {
+					name: 'Carl',
+					address: {
+						city: 'New York'
+					}
+				};
+
+				const rData = {
+					name: 'Carl',
+					surname: 'Doe',
+					address: {
+						city: 'New York'
+					}
+				}
 
 				const expectedArr = [
 					{
@@ -278,9 +199,6 @@ describe('Not using custom comparison function', () => {
 				];
 
 				const { errorCount, arr } = compareArrays(lData, rData);
-				// console.slog(
-				// 	JSON.stringify(answer, null, 2)
-				// )
 				expect(arr).toEqual(expectedArr);
 				expect(errorCount).toBe(1);
 			})
@@ -360,56 +278,56 @@ describe('Not using custom comparison function', () => {
 	})
 
 	describe('findBasedOnLocation', () => {
-		it('return the line on the given object', () => {
+		it('returns the value if it is a string', () => {
 			const	location = [
 				['', 'object'],
 				['surname', 'string']
 			];
 
-			const rData = [
-				{
-					location: [
-						['', 'object'],
-						['name', 'string']
-					],
-					value: 'Mary',
-				},
-				{
-					location: [
-						['', 'object'],
-						['surname', 'string']
-					],
-					value: 'surname',
-				}
-			];
+			const rData = {
+				name: 'Jhon',
+				surname: 'Doe',
+			};
 
-			expect(findBasedOnLocation(rData, location)).toEqual(rData[1]);
+			expect(findBasedOnLocation(rData, location)).toEqual(rData.surname);
 		});
 
-		it('works if last location type is different', () => {
+		it('returns a nest in if the location is one', () => {
 			const	location = [
 				['', 'object'],
-				['surname', 'number']
+				['address', 'object']
 			];
 
-			const rData = [
-				{
-					location: [
-						['', 'object'],
-						['name', 'string']
-					],
-					value: 'Mary',
-				},
-				{
-					location: [
-						['', 'object'],
-						['surname', 'string']
-					],
-					value: 'surname',
+			const rData = {
+				name: 'Jhon',
+				surname: 'Doe',
+				address: {
+					city: 'Piracicaba',
+					state: 'SP',
 				}
+			};
+
+			expect(findBasedOnLocation(rData, location)).toEqual(rData.address);
+		})
+
+		it('returns the correct value in case location is an array', () => {
+			const location = [
+				['', 'object'],
+				['sons', 'array'],
+				['0', 'object'],
+				['name', 'string'],
 			];
 
-			expect(findBasedOnLocation(rData, location)).toEqual(rData[1]);
+			const rData = {
+				name: 'John',
+				sons: [
+					{name: 'Jenny', age: 15},
+					{name: 'Carl',  age: 10},
+				]
+			}
+			const expected = rData.sons[0].name;
+			const answer = findBasedOnLocation(rData, location);
+			expect(answer).toEqual(expected);
 		})
 	})
 

@@ -1,13 +1,14 @@
 # TODO
 
-- comparing using matchers
--- using like matchers
--- apply recursion to user eachLike 
-
-- Work on visual representation when
--- comparing strings and this will probably fit an eachLike as root
-- perform a test to receive real inputs and check correct output
-
+- Work on new comparison
+	- comparison function will now receive:
+	  - left.value (from 1_getArrayOfEntries)
+		- part of right object that corresponds to left.location
+	- comparison function will return something like {ok, valueToPrint, receivedToPrint, appendStr}
+	- lData map will generate a list of eachLikes and extraneuous verification will check fisrt on this list to check if its value is possible inside of it
+- Work on new entriesToConsoleLog
+	- the value will come has it need to be printed from now own, no need to make huge conversions on postProcess
+- Rename the function compareArrayOfEntries, now it is receiving structures instead, renamed on test, also the describe part
 
 The index function will receive:
 

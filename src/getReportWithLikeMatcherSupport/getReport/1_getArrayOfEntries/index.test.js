@@ -108,7 +108,7 @@ describe('getArrayOfEntries', () => {
 
 		describe('Root is Array', () => {
 
-			it.only('works for an array of arrays', () => {
+			it('works for an array of arrays', () => {
 				const arr = [
 					[
 						'John',
